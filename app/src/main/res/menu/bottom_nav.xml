@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:title="出行顺序"
+        android:icon="@drawable/home_24"/>
+
+    <item
+        android:id="@+id/search"
+        android:title="添加行程"
+        android:icon="@drawable/search_24"/>
+
+    <item
+        android:id="@+id/sticky"
+        android:title="行程"
+        android:icon="@drawable/sticky_24"/>
+
+    <item
+        android:id="@+id/me"
+        android:title="我的"
+        android:icon="@drawable/propane_24"/>
+
+</menu>
