@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">车票</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO：删除或更改此占位符文本 -->
+    <string name="hello_blank_fragment">你好空白片段</string>
+    <string name="appwidget_text">范例</string>
+    <string name="add_widget">添加小部件</string>
+    <string name="app_widget_description">相爱不需要技巧，但是相处需要。</string>
+    <string name="widget_description">每日一言</string>
+    <string name="chepiao_description">每日一言</string>
 </resources>

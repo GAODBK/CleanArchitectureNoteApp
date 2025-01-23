@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +28,7 @@ public class HomeFragment extends Fragment {
     private NoteAdapter noteAdapter;
 
     public HomeFragment() {
-        // Required empty public constructor
+        // 必需的空公共构造函数
     }
 
     @Override
@@ -50,7 +49,7 @@ public class HomeFragment extends Fragment {
     }
 
     @SuppressLint({"Range", "NotifyDataSetChanged"})
-    private void loadTicketsFromDatabase() {
+    public void loadTicketsFromDatabase() {
         Cursor cursor = null;
         try {
             cursor = dbHelper.showData();
@@ -74,9 +73,8 @@ public class HomeFragment extends Fragment {
                     // 检查列索引是否有效
                     if (idIndex == -1 || trainNumberIndex == -1 || departureDateIndex == -1 ||
                             departureTimeIndex == -1 || arrivalTimeIndex == -1 || departureStationIndex == -1 ||
-                            arrivalStationIndex == -1 || checkInGateIndex == -1 || seatNumberIndex == -1 ||
-                            remark1Index == -1 || remark2Index == -1 || remark3Index == -1 || remark4Index == -1) {
-                        Log.e("HomeFragment", "Invalid column index");
+                            arrivalStationIndex == -1 || checkInGateIndex == -1 || seatNumberIndex == -1) {
+                        Log.e("HomeFragment", "列索引无效");
                         return;
                     }
 
@@ -98,7 +96,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         } catch (Exception e) {
-            Log.e("HomeFragment", "Error loading tickets from database", e);
+            Log.e("HomeFragment", "从数据库加载票证时出错", e);
         } finally {
             if (cursor != null) {
                 cursor.close();

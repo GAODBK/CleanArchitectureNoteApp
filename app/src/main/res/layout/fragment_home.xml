@@ -89,9 +89,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:background="#F8F9FA"/>
-
 
         <!-- 航班卡片 -->
         <androidx.cardview.widget.CardView

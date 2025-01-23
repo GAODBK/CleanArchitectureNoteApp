@@ -68,7 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             result = db.insert("tickets", null, values);
         } catch (Exception e) {
-            Log.e("DBHelper", "Error inserting ticket", e);
+            Log.e("DBHelper", "插入票据时出错", e);
         } finally {
             if (db != null) {
                 db.close();
@@ -82,8 +82,9 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM tickets", null);
         if (cursor != null) {
             Log.d("DBHelper", "获取的行数: " + cursor.getCount());
+            cursor.close();
         }
 
-        return db.rawQuery("SELECT * FROM tickets", null);
+        return db.rawQuery("SELECT * FROM tickets ORDER BY id DESC", null);
     }
 }

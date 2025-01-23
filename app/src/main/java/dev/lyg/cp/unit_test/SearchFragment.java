@@ -116,9 +116,7 @@ public class SearchFragment extends Fragment {
             if (leftEditText.length() > 0 && rightEditText.length() > 0 &&
                     dateEditText.length() > 0 && trainnNumberEditText.length() > 0 &&
                     checkEditText.length() > 0 && seatEditText.length() > 0 &&
-                    departureStationEditText.length() > 0 && arrivalStationEditText.length() > 0 &&
-                    remark1EditText.length() > 0 && remark2EditText.length() > 0 &&
-                    remark3EditText.length() > 0 && remark4EditText.length() > 0
+                    departureStationEditText.length() > 0 && arrivalStationEditText.length() > 0
             ) {
 
                 long id = dbHelper.insertTicket(
