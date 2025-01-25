@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.lyg.cp.lock.SlidingFinishLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lock_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242424"
+    tools:context=".lock.LockActivity">
+    <!--dev/lyg/cp/lock/SlidingFinishLayout.java-->
+
+    <TextView
+        android:id="@+id/lock_time"
+        android:layout_width="match_parent"
+        android:layout_height="138dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="17:30"
+        android:textColor="#ffffff"
+        android:textSize="118sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/lock_date"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_above="@+id/hintTextView"
+        android:gravity="center"
+        android:text="12月21日 星期三"
+        android:textColor="#ffffff"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/iv_audio"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        app:srcCompat="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tv_audio_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_audio"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="专辑名称"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_audio_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:text="演唱者"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+
+    <dev.lyg.cp.lock.HintTextView
+        android:id="@+id/hintTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:includeFontPadding="false"
+        android:text=">>> 滑动解锁"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+</dev.lyg.cp.lock.SlidingFinishLayout>

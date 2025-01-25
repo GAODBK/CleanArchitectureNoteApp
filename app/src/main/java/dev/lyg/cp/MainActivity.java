@@ -1,20 +1,21 @@
 package dev.lyg.cp;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Build;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import android.view.Window;
-import android.view.WindowInsets;
-import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import dev.lyg.cp.lock.NotificationUtil;
+import dev.lyg.cp.lock.PlayService;
 import dev.lyg.cp.unit_test.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,23 +26,30 @@ public class MainActivity extends AppCompatActivity {
     private final Fragment[] fragments = new Fragment[4];
     private int currentFragmentIndex = -1;
 
+    private static final int REQUEST_CODE_POST_NOTIFICATIONS = 101;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-
-        // 使状态栏透明
-        Window window = getWindow();
-        window.setFlags(
+        // 使状态栏图标为白色，旗帜布局无限制
+        getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
 
+        setContentView(R.layout.activity_main);
+
+        Intent intent = new Intent(this, PlayService.class);
+        startService(intent);
+
+        // 检查并请求通知权限（针对 Android 13 及以上版本）
+        startNotification();
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         initializeFragments();
 
-        // Set default fragment
+        // 设置默认片段
         switchFragment(0);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -69,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     // 1 15 10
     private void switchFragment(int newIndex) {
         if (newIndex == currentFragmentIndex) {
-            return; // Avoid redundant operations
+            return; // 避免冗余操作
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -93,5 +101,28 @@ public class MainActivity extends AppCompatActivity {
 
         transaction.commit();
         currentFragmentIndex = newIndex;
+    }
+
+    private void startNotification() {
+        NotificationUtil notificationUtil = new NotificationUtil(this);
+        notificationUtil.showNotification();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_CODE_POST_NOTIFICATIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startNotification();
+            } else {
+                // 权限被拒绝时可以提示用户
+                Toast.makeText(
+                        this,
+                        "请允许通知权限",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        }
     }
 }

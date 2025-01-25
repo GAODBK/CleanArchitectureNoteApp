@@ -3,20 +3,21 @@ package dev.lyg.cp.unit_test;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dev.lyg.cp.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MeFragment extends Fragment {
+    private List<Integer> list = new ArrayList<>();
 
+    private RecyclerView mRecyclerView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,7 +39,7 @@ public class MeFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment MeFragment.
      */
-    // TODO: Rename and change types and number of parameters
+    // TODO：重命名并更改参数的类型和数量
     public static MeFragment newInstance(String param1, String param2) {
         MeFragment fragment = new MeFragment();
         Bundle args = new Bundle();
@@ -58,9 +59,9 @@ public class MeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_me, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 充气这个片段的布局
+        View view = inflater.inflate(R.layout.fragment_me, container, false);
+        return view;
     }
 }
