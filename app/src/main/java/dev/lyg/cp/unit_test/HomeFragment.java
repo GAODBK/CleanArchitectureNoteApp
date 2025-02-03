@@ -1,6 +1,5 @@
 package dev.lyg.cp.unit_test;
 
-import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+
 import dev.lyg.cp.R;
 import dev.lyg.cp.util.DBHelper;
 import dev.lyg.cp.util.NoteAdapter;
@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         dbHelper = new DBHelper(requireContext());
 
-         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         noteAdapter = new NoteAdapter(requireContext(), tickets);
         recyclerView.setAdapter(noteAdapter);
@@ -47,7 +47,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    @SuppressLint({"Range", "NotifyDataSetChanged"})
     public void loadTicketsFromDatabase() {
         Cursor cursor = null;
         try {

@@ -18,6 +18,7 @@
         android:text="17:30"
         android:textColor="#ffffff"
         android:textSize="118sp"
+        android:fontFamily="@font/beautiful"
         android:textStyle="bold|italic" />
 
     <TextView
@@ -27,6 +28,7 @@
         android:layout_above="@+id/hintTextView"
         android:gravity="center"
         android:text="12月21日 星期三"
+        android:fontFamily="@font/beautiful"
         android:textColor="#ffffff"
         android:textSize="30sp" />
 
@@ -46,8 +48,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text="专辑名称"
+        android:fontFamily="@font/beautiful"
         android:textColor="#ffffff"
-        android:textSize="20sp" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/tv_audio"
@@ -57,8 +60,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
         android:text="演唱者"
+        android:fontFamily="@font/beautiful"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="26sp" />
 
 
     <dev.lyg.cp.lock.HintTextView
@@ -70,6 +74,7 @@
         android:layout_marginBottom="30dp"
         android:includeFontPadding="false"
         android:text=">>> 滑动解锁"
+        android:fontFamily="@font/beautiful"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

@@ -327,6 +327,8 @@
 
             <!-- 条形码 -->
             <ImageView
+                android:id="@+id/qrCode"
+                android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:scaleType="fitCenter"

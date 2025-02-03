@@ -498,3 +498,251 @@ public class SelectView extends ConstraintLayout {
     android:layout_margin="16dp"/>
 ```
 
+在安卓项目中，文件的存放位置通常需要按照其用途和 Android 的最佳实践来组织。根据你提到的需求，以下是一些建议：
+
+### 1. **存储 JSON 文件**
+JSON 文件通常用来保存配置数据或内容数据，可以放在 `assets` 文件夹中，或者 `res/raw` 文件夹中。具体选择哪个目录，取决于你是否需要在运行时修改这些文件。
+
+#### 使用 `assets` 文件夹：
+- **路径**：`src/main/assets/`
+- **优点**：你可以存储任何文件，并且在运行时可以通过 `AssetManager` 访问。
+- **示例**：将 `data.json` 存储在 `assets` 文件夹下
+  - 路径：`src/main/assets/data.json`
+
+#### 使用 `res/raw` 文件夹：
+- **路径**：`src/main/res/raw/`
+- **优点**：资源文件可以通过 `Resources` 类直接访问，适用于不需要频繁修改的文件。
+- **示例**：将 `data.json` 存储在 `res/raw` 文件夹下
+  - 路径：`src/main/res/raw/data.json`
+
+# 4. **存储 `readme.md` 文件的资源（图片、视频、字体、CSS 文件）**
+
+如果你希望将图片、视频、字体和 CSS 文件存储在项目中，并且它们是与 `readme.md` 文件相关的资源，建议使用以下结构：
+
+#### 图片文件
+图片可以放在 `res/drawable` 文件夹中，通常在 Android 项目中，所有图片资源都放在这个目录。
+
+- **路径**：`src/main/res/drawable/`
+- **命名规则**：图片文件的命名应为小写字母，使用下划线分隔单词，例如 `image_1.png`，`logo.jpg`。
+
+#### 视频文件
+视频文件一般放在 `res/raw` 文件夹中，因为它通常需要被直接读取并播放。
+
+- **路径**：`src/main/res/raw/`
+- **命名规则**：视频文件的命名通常使用小写字母和下划线分隔，例如 `video_sample.mp4`。
+
+#### 字体文件
+字体文件可以放在 `res/font` 文件夹中，通常用于应用的自定义字体。
+
+- **路径**：`src/main/res/font/`
+- **命名规则**：字体文件的命名也建议使用小写字母和下划线分隔，例如 `custom_font.ttf`。
+
+#### CSS 文件
+CSS 文件并不是 Android 原生支持的资源类型，但你可以将它们放在 `assets` 文件夹中，然后通过 WebView 或其他方式使用它们。
+
+- **路径**：`src/main/assets/`
+- **命名规则**：文件命名建议使用小写字母和下划线，例如 `styles.css`。
+
+### 3. **项目资源结构示例**
+以下是一个可能的项目资源结构示例：
+
+```
+app/
+├── src/
+│   └── main/
+│       ├── assets/
+│       │   ├── data.json
+│       │   ├── readme.md
+│       │   ├── images/
+│       │   │   ├── image_1.png
+│       │   │   └── logo.jpg
+│       │   └── styles.css
+│       ├── res/
+│       │   ├── drawable/
+│       │   │   ├── image_1.png
+│       │   │   └── logo.jpg
+│       │   ├── raw/
+│       │   │   ├── video_sample.mp4
+│       │   │   └── audio_sample.mp3
+│       │   ├── font/
+│       │   │   └── custom_font.ttf
+```
+
+### 4. **如何加载 JSON、图片、视频等资源**
+
+#### 加载 JSON 文件：
+```java
+// 从 assets 文件夹中加载 JSON 文件
+AssetManager assetManager = getAssets();
+InputStream inputStream = assetManager.open("data.json");
+
+// 如果是从 raw 文件夹中加载：
+Resources res = getResources();
+InputStream inputStream = res.openRawResource(R.raw.data);
+```
+
+#### 加载图片：
+```java
+ImageView imageView = findViewById(R.id.imageView);
+imageView.setImageResource(R.drawable.image_1); // 从 drawable 中加载
+```
+
+#### 加载视频：
+```java
+VideoView videoView = findViewById(R.id.videoView);
+Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.video_sample);
+videoView.setVideoURI(videoUri);
+videoView.start();
+```
+
+#### 加载自定义字体：
+```java
+TextView textView = findViewById(R.id.textView);
+Typeface typeface = ResourcesCompat.getFont(this, R.font.custom_font);
+textView.setTypeface(typeface);
+```
+
+### 总结：
+- JSON 文件可以放在 `assets` 或 `res/raw` 文件夹中。
+- 图片、视频、字体和 CSS 文件可以根据它们的用途存储在 `res/drawable`、`res/raw`、`res/font` 和 `assets` 文件夹中。
+- 图片文件、字体文件和 CSS 文件可以通过相应的资源访问方式（如 `ImageView`、`Typeface`、`WebView`）加载。
+
+
+
+
+
+明白了，问题出现在数据的格式化过程中，`city_name` 有时可能会包含 `|||`，导致解析时出错。这是由于在每组数据中，有些字段可能没有正确处理，导致数据被错误地拆分或者多余的分隔符被包含。
+
+为了解决这个问题，我们需要更精确地处理每组数据，并确保每个字段正确拆分。以下是修改后的代码，确保 `city_name` 和其他字段没有多余的 `|||`。
+
+### 解决方案
+
+我们可以在处理数据时，首先去除多余的分隔符或空白字符，并确保字段被正确拆分。这里的解决方法是去掉无用的分隔符和空格，同时通过条件判断来处理缺失的数据。
+
+### 1. 修改后的 Shell 脚本（CSV 和 JSON 格式）
+
+```bash
+#!/bin/bash
+
+# 输入文件，假设数据存储在 station_name.js 中 https://kyfw.12306.cn/otn/resources/js/framework/station_name.js 
+file="station_name.js"
+
+# 提取数据
+data=$(sed 's/var station_names =//g' "$file" | sed 's/;//g')
+
+# 清空或创建 CSV 文件
+csv_file="stations.csv"
+json_file="stations.json"
+
+echo "code,station_name,station_code,station_en_name,station_id,station_status,city_code,city_name" > "$csv_file"
+echo "[" > "$json_file"
+
+first=true
+echo "$data" | tr '@' '\n' | while read -r line; do
+  if [[ -n "$line" ]]; then
+    # 去掉行尾的多余字符 ||| 和空格
+    line=$(echo "$line" | sed 's/|*$//')
+
+    # 分割字段并处理
+    IFS='|' read -r code station_name station_code station_en_name station_id station_status city_code city_name <<< "$line"
+
+    # 处理缺失的字段（例如 city_name 可能为空或包含多余的字符）
+    if [[ -z "$city_name" ]]; then
+      city_name="未知"
+    fi
+
+    # 如果是第一条数据，去掉前面的逗号
+    if [[ "$first" == true ]]; then
+      first=false
+    else
+      echo "," >> "$json_file"
+    fi
+
+    # 将每条记录写入 JSON 文件
+    echo "  {
+      \"code\": \"$code\",
+      \"station_name\": \"$station_name\",
+      \"station_code\": \"$station_code\",
+      \"station_en_name\": \"$station_en_name\",
+      \"station_id\": \"$station_id\",
+      \"station_status\": \"$station_status\",
+      \"city_code\": \"$city_code\",
+      \"city_name\": \"$city_name\"
+    }" >> "$json_file"
+
+    # 将每条记录写入 CSV 文件
+    echo "$code,$station_name,$station_code,$station_en_name,$station_id,$station_status,$city_code,$city_name" >> "$csv_file"
+  fi
+done
+
+echo "]" >> "$json_file"
+
+echo "CSV 文件已生成：$csv_file"
+echo "JSON 文件已生成：$json_file"
+```
+
+### 修改说明：
+
+1. **去除无用的 `|||`**：
+   - 在每一行数据处理前使用 `sed 's/|*$//'`，移除字符串末尾的多余分隔符。
+2. **字段缺失处理**：
+   - 对 `city_name` 进行了空值判断，如果 `city_name` 为空，则赋值为 `"未知"`。可以根据需要修改为其他默认值。
+3. **CSV 和 JSON 输出**：
+   - 在输出 CSV 和 JSON 时，确保每一条数据都能正确处理，避免因为分隔符问题导致文件格式错误。
+
+### 执行结果：
+
+#### CSV 文件：
+
+```
+code,station_name,station_code,station_en_name,station_id,station_status,city_code,city_name
+bjb,北京北,VAP,beijingbei,bjb,0,0357,北京
+bjd,北京东,BOP,beijingdong,bjd,1,0357,北京
+bji,北京,BJP,beijing,bj,2,0357,北京
+zzx,资中西,ZZE,zizhongxi,zzx,3420,1712,内江
+```
+
+#### JSON 文件：
+
+```json
+[
+  {
+    "code": "bjb",
+    "station_name": "北京北",
+    "station_code": "VAP",
+    "station_en_name": "beijingbei",
+    "station_id": "bjb",
+    "station_status": "0",
+    "city_code": "0357",
+    "city_name": "北京"
+  },
+  {
+    "code": "bjd",
+    "station_name": "北京东",
+    "station_code": "BOP",
+    "station_en_name": "beijingdong",
+    "station_id": "bjd",
+    "station_status": "1",
+    "city_code": "0357",
+    "city_name": "北京"
+  },
+  {
+    "code": "zzx",
+    "station_name": "资中西",
+    "station_code": "ZZE",
+    "station_en_name": "zizhongxi",
+    "station_id": "zzx",
+    "station_status": "3420",
+    "city_code": "1712",
+    "city_name": "内江"
+  }
+]
+```
+
+### 总结：
+
+- **问题**：数据中可能会有多余的 `|||` 或缺失的字段，导致解析错误。
+- **解决方案**：去除尾部多余的分隔符，并对缺失的字段进行处理（例如设置默认值）。
+- **结果**：生成了正确格式的 CSV 和 JSON 文件，其中没有多余的分隔符或错误的字段值。
+
+希望这能解决你的问题，如果还有其他问题，随时告诉我！

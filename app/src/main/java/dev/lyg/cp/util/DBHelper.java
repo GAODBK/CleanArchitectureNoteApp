@@ -85,6 +85,16 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.close();
         }
 
-        return db.rawQuery("SELECT * FROM tickets ORDER BY id DESC", null);
+        return db.rawQuery(
+                "SELECT * FROM tickets ORDER BY datetime(departure_date || ' ' || departure_time)",
+                null);
+    }
+
+    public Cursor deleteData(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery(
+                "DELETE FROM tickets WHERE id = " + id,
+                null
+        );
     }
 }
