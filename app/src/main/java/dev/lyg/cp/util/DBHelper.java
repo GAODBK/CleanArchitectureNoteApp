@@ -79,22 +79,29 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor showData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM tickets", null);
-        if (cursor != null) {
-            Log.d("DBHelper", "获取的行数: " + cursor.getCount());
-            cursor.close();
-        }
-
         return db.rawQuery(
                 "SELECT * FROM tickets ORDER BY datetime(departure_date || ' ' || departure_time)",
                 null);
     }
 
-    public Cursor deleteData(int id) {
+    public void updateData(String id, String trainNumber, String departureDate, String departureTime,
+                           String arrivalTime, String departureStation, String arrivalStation,
+                           String checkInGate, String seatNumber) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("train_number", trainNumber);
+        values.put("departure_date", departureDate);
+        values.put("departure_time", departureTime);
+        values.put("arrival_time", arrivalTime);
+        values.put("departure_station", departureStation);
+        values.put("arrival_station", arrivalStation);
+        values.put("check_in_gate", checkInGate);
+        values.put("seat_number", seatNumber);
+        db.update("tickets", values, "id=?", new String[]{id});
+    }
+
+    public void deleteData(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery(
-                "DELETE FROM tickets WHERE id = " + id,
-                null
-        );
+        db.delete("tickets", "id=?", new String[]{id});
     }
 }

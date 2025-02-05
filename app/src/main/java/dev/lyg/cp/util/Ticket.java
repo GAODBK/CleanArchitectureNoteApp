@@ -18,6 +18,7 @@ public class Ticket {
     private String remark2;
     private String remark3;
     private String remark4;
+    private boolean isExpanded = false; // 新增字段，默认折叠
 
     public Ticket(
             int id, String trainNumber, String departureDate,
@@ -108,6 +109,14 @@ public class Ticket {
 
     public String getSeatNumber() {
         return seatNumber;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 
     public void setSeatNumber(String seatNumber) {

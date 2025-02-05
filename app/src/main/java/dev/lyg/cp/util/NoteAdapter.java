@@ -1,28 +1,28 @@
 package dev.lyg.cp.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
 import dev.lyg.cp.R;
-import dev.lyg.cp.unit_test.SearchFragment;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     private final ArrayList<Ticket> ticketList; // 使用 final 以强调不可变
     private final Context context;
-    private DBHelper dbHelper;
 
     public NoteAdapter(Context context, ArrayList<Ticket> ticketList) {
         this.context = context;
@@ -52,10 +52,40 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.checkInGate.setText(ticket.getCheckInGate());
         holder.seatNumber.setText(ticket.getSeatNumber());
 
-        holder.btnDelete.setOnClickListener(v -> {
-            int id = ticket.getId(); // 获取当前项的 ID
-            Log.d("NoteAdapter", "删除 ID: " + id);
 
+        holder.btnDelete.setOnClickListener(v -> {
+            // 创建 Dialog
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+            builder.setTitle("选择删除，修改");
+
+            // 加载自定义布局
+            View customView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog, null);
+            builder.setView(customView);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            // 获取布局中的按钮
+            MaterialButton btnDelete = customView.findViewById(R.id.btnDelete);
+            MaterialButton btnModify = customView.findViewById(R.id.btnModify);
+
+            // 删除按钮点击事件
+            btnModify.setOnClickListener(x -> {
+                Toast.makeText(context, "点击修改", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            });
+
+            // 修改按钮点击事件
+            btnDelete.setOnClickListener(x -> {
+                DBHelper dbHelper = new DBHelper(context);
+                String id = String.valueOf(ticketList.get(position).getId());
+
+                dbHelper.deleteData(id);
+                ticketList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, ticketList.size());
+                dialog.dismiss();
+            });
         });
     }
 

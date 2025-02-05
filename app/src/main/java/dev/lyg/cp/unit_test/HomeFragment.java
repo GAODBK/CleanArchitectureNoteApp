@@ -11,16 +11,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dev.lyg.cp.R;
 import dev.lyg.cp.util.DBHelper;
 import dev.lyg.cp.util.NoteAdapter;
 import dev.lyg.cp.util.Ticket;
+import dev.lyg.cp.stacklib.StackLayout;
 
 public class HomeFragment extends Fragment {
-
+    private StackLayout stackLayout;
     private RecyclerView recyclerView;
     private ArrayList<Ticket> tickets = new ArrayList<>();
     private DBHelper dbHelper;
@@ -33,6 +37,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        stackLayout = view.findViewById(R.id.stacklayout);
+
+        initStackView();
 
         recyclerView = view.findViewById(R.id.recyclerView);
         dbHelper = new DBHelper(requireContext());
@@ -68,7 +75,6 @@ public class HomeFragment extends Fragment {
                     int remark3Index = cursor.getColumnIndex("remark3");
                     int remark4Index = cursor.getColumnIndex("remark4");
 
-                    // 检查列索引是否有效
                     if (idIndex == -1 || trainNumberIndex == -1 || departureDateIndex == -1 ||
                             departureTimeIndex == -1 || arrivalTimeIndex == -1 || departureStationIndex == -1 ||
                             arrivalStationIndex == -1 || checkInGateIndex == -1 || seatNumberIndex == -1) {
@@ -100,7 +106,7 @@ public class HomeFragment extends Fragment {
                 cursor.close();
             }
         }
-        noteAdapter.notifyDataSetChanged(); // 更新数据
+        noteAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -108,6 +114,75 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
         if (dbHelper != null) {
             dbHelper.close();
+        }
+    }
+
+    private List<String> generateList() {
+        List<String> retList = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            retList.add("item : " + i);
+        }
+        return retList;
+    }
+
+    private void initStackView() {
+        stackLayout.nick = "first stacklayout";
+        List<String> datas = generateList();
+        stackLayout.setAdapter(new MyAdapter(datas));
+        stackLayout.setStatus(StackLayout.COLLAPSE);//折叠
+        //stackLayout.setStatus(StackLayout.COLLAPSE);//展开
+    }
+
+    class MyAdapter extends StackLayout.Adapter<MyAdapter.CustomViewHolder> {
+        private List<String> datas;
+
+        public MyAdapter(List<String> datas) {
+            this.datas = datas;
+        }
+
+        @Override
+        public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+            return new CustomViewHolder(view, this);
+        }
+
+        @Override
+        public void onBindViewHolder(CustomViewHolder holder, int position) {
+            holder.bindViews(position);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return R.layout.item;
+        }
+
+        @Override
+        public int getItemCount() {
+            return this.datas.size();
+        }
+
+        class CustomViewHolder extends StackLayout.ViewHolder {
+            private final View itemLLt;
+            private final TextView tv;
+            private final MyAdapter adapter;
+
+            public CustomViewHolder(View itemView, MyAdapter adapter) {
+                super(itemView);
+                this.adapter = adapter;
+                itemLLt = itemView.findViewById(R.id.item_llt);
+                tv = itemView.findViewById(R.id.tv);
+            }
+
+            public void bindViews(final int position) {
+                tv.setText(adapter.datas.get(position));
+                itemLLt.setOnClickListener(v -> {
+                    if (position == 0) {
+                        adapter.getView().switchStatus();
+                    } else {
+                        Toast.makeText(getContext(), "点击了" + position, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         }
     }
 }

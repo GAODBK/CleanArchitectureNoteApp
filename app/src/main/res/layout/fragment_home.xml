@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="20dp"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <!-- 顶部标题部分 -->
@@ -90,9 +90,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F8F9FA"/>
+            android:background="#F8F9FA" />
 
-        <!-- 航班卡片 -->
+        <!-- 航班卡片
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,7 +105,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- 航班信息部分 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -164,7 +163,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 航班详细信息 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -238,12 +236,13 @@
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
+        -->
         <!-- 酒店部分标题 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <TextView
@@ -256,5 +255,20 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <dev.lyg.cp.stacklib.StackScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <dev.lyg.cp.stacklib.StackLayout
+                    android:id="@+id/stacklayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </dev.lyg.cp.stacklib.StackScrollView>
     </LinearLayout>
 </ScrollView>

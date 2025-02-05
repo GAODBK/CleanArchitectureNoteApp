@@ -11,9 +11,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
         android:text="行程"
-        android:layout_marginTop="20dp"
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:background="#ffffff"
                 android:gravity="center"
-                android:text="Upcoming"
+                android:text="即将到来"
                 android:textColor="#000000" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Previous"
+                android:text="过去的行程"
                 android:textColor="#666666" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -328,13 +328,18 @@
             <!-- 条形码 -->
             <ImageView
                 android:id="@+id/qrCode"
-                android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:scaleType="fitCenter"
+                android:padding="10dp"
                 android:src="@drawable/barcode" />
-
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <ImageView
+        android:id="@+id/left_train"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:padding="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/left_train" />
 </LinearLayout>

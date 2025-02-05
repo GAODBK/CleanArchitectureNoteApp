@@ -1,6 +1,5 @@
 package dev.lyg.cp.unit_test;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.icu.util.Calendar;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -119,7 +119,6 @@ public class SearchFragment extends Fragment {
         remark3EditText = view.findViewById(R.id.remark3);
         remark4EditText = view.findViewById(R.id.remark4);
 
-        checkEditText.setOnClickListener(v -> showTicketGate());
         dateImage.setOnClickListener(v -> showDatePicker());
         rightImage.setOnClickListener(v -> showTimePicker(rightEditText));
         leftImage.setOnClickListener(v -> showTimePicker(leftEditText));
@@ -360,7 +359,8 @@ public class SearchFragment extends Fragment {
     }
 
     private void showScrollableMenu(TextView selectView, int lor) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        // 使用 MaterialAlertDialogBuilder 替换 AlertDialog.Builder
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(lor == 1 ? "选择出发站" : "选择到达站");
 
         // 使用对应的数据列表
@@ -373,10 +373,10 @@ public class SearchFragment extends Fragment {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             /*
              * parent:触发点击事件的父视图，这里通常是 ListView。如果需要操作整个列表视图（例如，获取适配器或整体更新），可以通过 parent 访问。
-             * viwe: 用户点击的具体视图对象，即列表中的某一项视图（如 TextView）。通过 view 可以操作单个子视图的外观或内容。
+             * view: 用户点击的具体视图对象，即列表中的某一项视图（如 TextView）。通过 view 可以操作单个子视图的外观或内容。
              * position: 用户点击项在列表中的位置，从 0 开始的索引值。用于根据点击的索引获取数据或执行相关逻辑。
              * id: 点击项的行 ID，一般与 position 相同，除非自定义了 ID。如果使用数据库或其他带 ID 的数据源，可以通过 id 定位具体数据项。
-             * */
+             */
             // 使用对应的数据列表和索引
             List<String> currentStationNames = (lor == 1) ? stationNameItems1 : stationNameItems2;
             List<String> currentArriveTime = (lor == 1) ? arriveTimeItems1 : arriveTimeItems2;
@@ -395,7 +395,7 @@ public class SearchFragment extends Fragment {
 
         // 包裹 ListView 的 FrameLayout（设置最大高度限制）
         FrameLayout frameLayout = new FrameLayout(getContext());
-        int maxHeight = (int) (400 * getContext().getResources().getDisplayMetrics().density); // 最大高度 300dp
+        int maxHeight = (int) (400 * getContext().getResources().getDisplayMetrics().density); // 最大高度 400dp
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, maxHeight
@@ -406,7 +406,7 @@ public class SearchFragment extends Fragment {
         // 添加 ListView 到 FrameLayout
         frameLayout.addView(listView);
 
-        // 设置 FrameLayout 为 AlertDialog 的内容
+        // 设置 FrameLayout 为 MaterialAlertDialog 的内容
         builder.setView(frameLayout);
 
         // 添加确认和取消按钮
@@ -423,14 +423,13 @@ public class SearchFragment extends Fragment {
                 } else if (lor == 2) {
                     rightEditText.setText(selectedItemCopy[1]);
                 }
+                showTicketGate();
             } else {
                 Log.d("ScrollableMenu", "未选择任何项");
             }
         });
 
-        builder.setNegativeButton("取消", (dialog, which) -> {
-            dialog.dismiss();
-        });
+        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
 
         // 显示对话框
         builder.create().show();

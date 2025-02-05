@@ -5,6 +5,8 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FormatUtils {
 
@@ -45,14 +47,13 @@ public class FormatUtils {
     public static String extractTicketGateInfo(String result) {
         // 正则表达式匹配检票口信息，提取15A、15B
         String regex = "<span style='color:red; font-weight:600;'>检票口(.*?)</span>";
-        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regex);
-        java.util.regex.Matcher matcher = pattern.matcher(result);
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(result);
 
         StringBuilder ticketGateInfo = new StringBuilder();
         // 第一个匹配的值（忽略）
         while (matcher.find()) {
             ticketGateInfo.append(matcher.group(1)).append(" ");
         }
-        return ticketGateInfo.toString();
-    }
+        return ticketGateInfo.length() > 0 ? ticketGateInfo.toString() : "--";    }
 }

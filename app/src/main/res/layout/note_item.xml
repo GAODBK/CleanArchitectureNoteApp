@@ -5,8 +5,11 @@
     android:id="@+id/myConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#f4f4f4"
+    android:clickable="true"
     android:clipChildren="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:paddingBottom="8dp">
 
     <!-- 日期标题 -->
     <LinearLayout
@@ -15,8 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginTop="14dp"
-        android:orientation="horizontal"
         android:gravity="center|start"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -32,7 +35,7 @@
             android:layout_marginStart="10dp"
             android:text="1月8日"
             android:textColor="#000000"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
     <!-- 白色卡片背景 -->
@@ -42,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginTop="16dp"
-        app:cardCornerRadius="16dp"
         android:layout_marginBottom="8dp"
+        app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -239,13 +242,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" "
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

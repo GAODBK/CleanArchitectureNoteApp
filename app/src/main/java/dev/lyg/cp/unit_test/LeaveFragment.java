@@ -28,7 +28,8 @@ import dev.lyg.cp.R;
  * create an instance of this fragment.
  */
 public class LeaveFragment extends Fragment {
-    private ImageView imageView;
+    private ImageView qrCode;
+    private ImageView leftTrainImage;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,8 +74,12 @@ public class LeaveFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        imageView = view.findViewById(R.id.qrCode);
-        loadImage("https://raw.githubusercontent.com/GAODBK/lyg-photo-warehouse/refs/heads/main/1%20(23).jpeg");
+
+        qrCode = view.findViewById(R.id.qrCode);
+        leftTrainImage = view.findViewById(R.id.left_train);
+
+        loadImage("https://tgimgbed-f3l.pages.dev/file/1738663611167_httc2.png", qrCode);
+        loadImage("https://tgimgbed-f3l.pages.dev/file/1738663622090_spxs2.png", leftTrainImage);
     }
 
     public boolean isNetworkAvailable(Context context) {
@@ -83,7 +88,7 @@ public class LeaveFragment extends Fragment {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    public void loadImage(String imageUrl) {
+    public void loadImage(String imageUrl, ImageView imageView) {
         // 检查是否有网络连接
         if (!isNetworkAvailable(getContext())) {
             // 如果没有网络，显示默认图片或错误提示
@@ -115,7 +120,10 @@ public class LeaveFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
                 // 在主线程中更新 UI
-                getActivity().runOnUiThread(() -> imageView.setImageBitmap(bitmap));
+                getActivity().runOnUiThread(() -> {
+                    imageView.setImageBitmap(bitmap);
+                    imageView.setPadding(0, 0, 0, 0);
+                });
             } catch (IOException e) {
                 e.printStackTrace();
                 // 网络请求失败时的处理，可以显示错误提示或占位图
