@@ -5,7 +5,7 @@
     android:id="@+id/myConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f4f4f4"
+    android:background="#F8F9FA"
     android:clickable="true"
     android:clipChildren="false"
     android:clipToPadding="false"
@@ -16,16 +16,17 @@
         android:id="@+id/dateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
         android:layout_marginTop="14dp"
         android:gravity="center|start"
         android:orientation="horizontal"
+        android:background="#F8F9FA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="17dp"
             android:layout_height="17dp"
+            android:layout_marginStart="13dp"
             android:src="@drawable/circes" />
 
         <TextView

@@ -2,6 +2,7 @@ package dev.lyg.cp.unit_test;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
@@ -127,6 +128,9 @@ public class SearchFragment extends Fragment {
         getTrainNo(arrivalStationEditText, 2);
 
         btn_add.setOnClickListener(v -> {
+
+            // String trainNo = getArguments().getString("trainNo");
+            // int id = Intent.getIntentOld().getIntExtra("id", 0);
 
             if (leftEditText.length() > 0 && rightEditText.length() > 0 &&
                     dateEditText.length() > 0 && trainnNumberEditText.length() > 0 &&
