@@ -29,7 +29,7 @@ public class NoteAdapter extends StackLayout.Adapter<NoteAdapter.CustomViewHolde
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
         return new CustomViewHolder(view, this);
     }
 
@@ -48,7 +48,6 @@ public class NoteAdapter extends StackLayout.Adapter<NoteAdapter.CustomViewHolde
         holder.seatNumber.setText(ticket.getSeatNumber());
 
         holder.itemView.setOnClickListener(v -> {
-            // Toast.makeText(context, "点击了 " + position, Toast.LENGTH_SHORT).show();
             // 创建 Dialog
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
             builder.setTitle("选择删除，修改");
@@ -85,7 +84,7 @@ public class NoteAdapter extends StackLayout.Adapter<NoteAdapter.CustomViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        return R.layout.item;
+        return R.layout.note_item;
     }
 
     @Override

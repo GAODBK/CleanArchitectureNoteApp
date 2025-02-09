@@ -1,121 +1,33 @@
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.cardview.widget.CardView android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginBottom="16dp"
-        app:cardCornerRadius="16dp">
-
-        <LinearLayout android:id="@+id/item_llt" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical">
-
-            <!-- 航班信息部分（上半部分） -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:background="@drawable/top_bg" android:padding="16dp">
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical">
-
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="NYC"
-                        android:textColor="#FFFFFF" android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView android:id="@+id/departure_station"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="New-York" android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <TextView android:id="@+id/departure_date" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="8H 30M"
-                    android:textColor="#FFFFFF" />
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:gravity="end" android:orientation="vertical">
-
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="LDN"
-                        android:textColor="#FFFFFF" android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView android:id="@+id/arrival_station" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="London"
-                        android:textColor="#FFFFFF" android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 航班详细信息（下半部分） -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:background="@drawable/bottom_bg" android:padding="16dp">
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:orientation="vertical">
-
-                    <TextView android:id="@+id/tvGateNumber" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="1 May"
-                        android:textColor="#FFFFFF" android:textSize="16sp" />
-
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="Date"
-                        android:textColor="#FFFFFF" android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView android:id="@+id/departure_time" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="08:00 AM"
-                        android:textColor="#FFFFFF" android:textSize="16sp" />
-
-                    <TextView android:id="@+id/tv" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="出发时间"
-                        android:textColor="#FFFFFF" android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:gravity="end" android:orientation="vertical">
-
-                    <TextView android:id="@+id/tvSeatNumber" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="23"
-                        android:textColor="#FFFFFF" android:textSize="16sp" />
-
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:text="Number"
-                        android:textColor="#FFFFFF" android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
 ```
+yourpackage/
+├── activities/      # Activity 相关
+│   ├── MainActivity.java         # 负责 BottomNavigationView 绑定和 Fragment 切换
+│   ├── LockActivity.java         # 仿音乐锁屏页面（横滑退出）
+├── fragments/       # Fragment 相关
+│   ├── HomeFragment.java        # 主页，显示车次列表，支持折叠/展开效果
+│   ├── EnterFragment.java       # 录入车次信息并存入数据库
+├── database/        # 数据库相关（SQLite）
+│   ├── DBHelper.java            # SQLiteOpenHelper，管理数据库表的创建和升级
+│   ├── TrainDAO.java            # 操作数据库的 DAO 类，包含增删改查方法
+├── models/          # 数据模型
+│   └── Train.java              # 车次信息的数据模型
+├── network/         # 网络请求
+│   ├── ApiService.java        # 负责请求远程 API 获取车次信息
+├── services/        # 后台服务
+│   ├── PlayService.java       # 负责播放相关任务（如锁屏音乐）
+├── utils/           # 工具类
+│   ├── NotificationUtil.java  # 发送通知（如火车出发前提醒）
+│   ├── AndroidWorkaround.java # 适配 Android 设备，处理 UI 兼容性问题
+│   ├── HintTextView.java      # 自定义可变色的提示文本
+│   ├── SlidingFinishLayout.java # 横滑退出页面的自定义 View
+├── widgets/         # 自定义 UI 组件
+│   ├── StackScrollView.java   # 自定义滚动组件，实现 iOS 通知折叠效果
+│   ├── StackLayout.java       # 折叠/展开视图的容器
+│   ├── IScrollSubscription.java # 滚动订阅接口
+│   ├── IScrollListener.java    # 滚动监听接口
+│   ├── WeekDatePicker.java    # 自定义周日期选择器
+│   ├── StationPicker.java     # 自定义站点选择器
 
-drawable/top_bg.xml
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <!-- 设置上部颜色 -->
-    <solid android:color="#5C6BC0" />
-    <corners android:topLeftRadius="16dp" android:topRightRadius="16dp"
-        android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp" />
-</shape>
-```
-
-drawable/bottom_bg.xml
-
-```xml
-
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <!-- 设置下部颜色 -->
-    <solid android:color="#FF7043" />
-    <corners android:bottomLeftRadius="16dp" android:bottomRightRadius="16dp"
-        android:topLeftRadius="0dp" android:topRightRadius="0dp" />
-</shape>
 ```
 
 ### 1. 修改后的 Shell 脚本（CSV 和 JSON 格式）
@@ -190,8 +102,26 @@ echo "JSON 文件已生成：$json_file"
     - 在输出 CSV 和 JSON 时，确保每一条数据都能正确处理，避免因为分隔符问题导致文件格式错误。
 
 [模仿ssm架构的Android SQLite APP 开发](https://www.youtube.com/watch?v=H0Wm3jdG8Ys&t=346s)
+
 [Android端实现仿IOS通知栏的折叠/展开效果的组件](https://github.com/itlwy/StackDrawer/blob/master/app/src/main/java/com/lwy/myapplication/NestingStackActivity.java)
+
 [ 仿音乐播放器锁屏页面，以及通知栏8.0适配和自定义大小图样式适配 ](https://github.com/GAODBK/LockDemo/blob/master/app/src/main/java/com/ztk/demo/lockdemo/service/PlayService.java)
+
+[12306车站列表](https://github.com/T0lja/12306TicketInquiry/blob/master/src/main/java/dev/tolja/data/Station.java)
+
+[ 一个易于使用的 Android 图表库，带有动画。 ](https://github.com/HackPlan/AndroidCharts)
+
+[使用 Fan Layout Manager，您可以实现水平列表，其项目像风扇叶片一样移动 ](https://github.com/jiang111/Awesome-RecyclerView-LayoutManager/blob/master/README.md)
+
+[在足球](https://crazysunj.com/gnz-yingchao)
+
+[轮播指示器、3D旋转和倒影效果](https://github.com/crazysunj/CardSlideView?tab=readme-ov-file)
+
+[周日期选择器](https://github.com/AriesHoo/NCalendar/blob/master/ncalendar/src/main/java/com/necer/ncalendar/calendar/WeekCalendar.java)
+
+[双线选择器](https://github.com/wangjiegulu/WheelView/blob/master/app/src/main/java/com/wangjie/wheelview/WheelView.java)
+
+[形状弹窗](https://github.com/andyxialm/ColorDialog/blob/master/ColorDialog/src/main/java/cn/refactor/lib/colordialog/util/DisplayUtil.java)
 
 ## License
 

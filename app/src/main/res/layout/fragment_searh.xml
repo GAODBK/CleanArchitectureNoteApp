@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -123,30 +122,7 @@
                     android:textSize="16sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
 
-            <dev.lyg.cp.util.SelectView
-                android:id="@+id/selectView1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="1" />
-
-            <dev.lyg.cp.util.SelectView
-                android:id="@+id/selectView2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-        -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -183,8 +159,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="12dp"
-                        android:gravity="start|center"
                         android:background="@null"
+                        android:gravity="start|center"
                         android:hint="出发站点"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -342,7 +318,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/wicket" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/check_in_gate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -642,6 +618,7 @@
 
         <!-- 搜索按钮 -->
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/findTicketsBtn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginBottom="24dp"
