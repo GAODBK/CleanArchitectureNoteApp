@@ -17,6 +17,15 @@
     <string name="dialog_cancel">取消</string>
     <string name="dialog_ok">确认</string>
 
+    <string name="edit_title">标题</string>
+    <string name="search_hint">搜索便签</string>
+    <string-array name="type_name">
+        <item>学习</item>
+        <item>生活</item>
+        <item>其他</item>
+    </string-array>
+    <string name="edit_text">内容</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

@@ -33,6 +33,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/showTicketsBtn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -42,6 +43,7 @@
                 android:textColor="#000000" />
 
             <TextView
+                android:id="@+id/leaveTicketsBtn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -324,22 +326,6 @@
                         android:textColor="#999999" />
                 </LinearLayout>
             </LinearLayout>
-
-            <!-- 条形码 -->
-            <ImageView
-                android:id="@+id/qrCode"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:padding="10dp"
-                android:src="@drawable/barcode" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-
-    <ImageView
-        android:id="@+id/left_train"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:padding="20dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/left_train" />
 </LinearLayout>

@@ -119,7 +119,7 @@ echo "JSON 文件已生成：$json_file"
 
 [周日期选择器](https://github.com/AriesHoo/NCalendar/blob/master/ncalendar/src/main/java/com/necer/ncalendar/calendar/WeekCalendar.java)
 
-[双线选择器](https://github.com/wangjiegulu/WheelView/blob/master/app/src/main/java/com/wangjie/wheelview/WheelView.java)
+[双线选择器](https://github.com/CNCoderX/WheelView/blob/master/library/src/main/java/com/cncoderx/wheelview/WheelScroller.java)
 
 [形状弹窗](https://github.com/andyxialm/ColorDialog/blob/master/ColorDialog/src/main/java/cn/refactor/lib/colordialog/util/DisplayUtil.java)
 

@@ -4,4 +4,18 @@
         <attr name="appWidgetInnerRadius" format="dimension" />
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="WheelView">
+        <attr name="wheelCyclic" format="boolean"/>
+        <attr name="wheelEntries" format="reference"/>
+        <attr name="wheelItemCount" format="integer"/>
+        <attr name="wheelItemWidth" format="dimension"/>
+        <attr name="wheelItemHeight" format="dimension"/>
+        <attr name="wheelTextSize" format="dimension"/>
+        <attr name="wheelTextColor" format="color"/>
+        <attr name="wheelSelectedTextColor" format="color"/>
+        <attr name="wheelDividerColor" format="color"/>
+        <attr name="wheelHighlightColor" format="color"/>
+    </declare-styleable>
+
 </resources>

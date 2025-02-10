@@ -6,7 +6,13 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="Theme.车票" parent="Base.Theme.车票" />
+    <style name="Theme.车票" parent="Base.Theme.车票">
+        <!--    <style name="AppTheme.NoActionBar">-->
+        <item name="windowActionBar">true</item>
+        <item name="icon">@drawable/search</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/colorBlack</item>
+    </style>
 
     <style name="Base.Theme.车票.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
         <!-- Radius of the outer bound of widgets to make the rounded corners -->

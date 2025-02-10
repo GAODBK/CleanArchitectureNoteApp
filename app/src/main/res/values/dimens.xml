@@ -5,14 +5,14 @@
 Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-
     <dimen name="shape_login_buttom_300px">150px</dimen>
     <dimen name="shape_login_buttom_64px">32px</dimen>
     <dimen name="edit_dialog_quantity_wid">100dp</dimen>
     <dimen name="edit_dialog_quantity_hei">40dp</dimen>
     <dimen name="edit_dialog_normal_wid">150dp</dimen>
 
+    <dimen name="wheel_item_width">160dp</dimen>
+    <dimen name="wheel_item_height">40dp</dimen>
+    <dimen name="wheel_divider_height">1dp</dimen>
+    <dimen name="wheel_text_size">10sp</dimen>
 </resources>

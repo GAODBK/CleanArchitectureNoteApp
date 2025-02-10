@@ -31,7 +31,7 @@ import java.util.Locale;
 
 import dev.lyg.cp.R;
 import dev.lyg.cp.alert.ViewLoading;
-import dev.lyg.cp.alert.WheelView;
+import dev.lyg.cp.alert.Wheel3DView;
 import dev.lyg.cp.util.DBHelper;
 import dev.lyg.cp.util.FormatUtils;
 import okhttp3.OkHttpClient;
@@ -164,6 +164,9 @@ public class SearchFragment extends Fragment {
             Toast.makeText(requireContext(), "请先填写车次和日期", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        ViewLoading.show(getContext(), "正在获取数据", true);
+
         // 创建 OkHttpClient 实例
         OkHttpClient client = new OkHttpClient();
 
@@ -360,7 +363,7 @@ public class SearchFragment extends Fragment {
 
         // 加载自定义弹窗布局
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.layout_edit_dialog, null);
-        WheelView wv = dialogView.findViewById(R.id.wheel_view_wv);
+        Wheel3DView wv = dialogView.findViewById(R.id.wheel_view_wv);
         TextView tvCancel = dialogView.findViewById(R.id.tv_cancel);
         TextView tvEnsure = dialogView.findViewById(R.id.tv_ensure);
 
@@ -370,24 +373,25 @@ public class SearchFragment extends Fragment {
         List<String> currentArriveTime = (lor == 1) ? arriveTimeItems1 : arriveTimeItems2;
         List<String> currentStartTime = (lor == 1) ? startTimeItems1 : startTimeItems2;
 
-        //判断currentMenuItems为空
-        if (currentMenuItems.size() == 0) {
+        // 判断 currentMenuItems 为空
+        if (currentMenuItems.isEmpty()) {
             Toast.makeText(getContext(), "暂无数据", Toast.LENGTH_SHORT).show();
             return;
         }
-        wv.setItems(currentMenuItems);
 
-        wv.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
-            @Override
-            public void onSelected(int selectedIndex, String item) {
-                if (lor == 1) {
-                    index1 = selectedIndex - 2;
-                    selectedItemCopy[0] = currentStationNames.get(selectedIndex - 2);
-                    selectedItemCopy[2] = currentStartTime.get(selectedIndex - 2);
-                } else {
-                    selectedItemCopy[0] = currentStationNames.get(selectedIndex - 2);
-                    selectedItemCopy[1] = currentArriveTime.get(selectedIndex - 2);
-                }
+        // 使用新的 setEntries 方法设置 WheelView 数据
+        wv.setEntries(currentMenuItems.toArray(new CharSequence[0]));
+        wv.setTextSize(80); // 设置字体大小为 80sp
+
+        // 监听选择变化
+        wv.setOnWheelChangedListener((wheel, oldIndex, newIndex) -> {
+            if (lor == 1) {
+                index1 = newIndex;
+                selectedItemCopy[0] = currentStationNames.get(newIndex);
+                selectedItemCopy[2] = currentStartTime.get(newIndex);
+            } else {
+                selectedItemCopy[0] = currentStationNames.get(newIndex);
+                selectedItemCopy[1] = currentArriveTime.get(newIndex);
             }
         });
 
@@ -396,7 +400,6 @@ public class SearchFragment extends Fragment {
                 .setView(dialogView)
                 .create();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_cart_et_balance);
-
 
         // 取消按钮
         tvCancel.setOnClickListener(v -> dialog.dismiss());

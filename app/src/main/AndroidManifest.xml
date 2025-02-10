@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!--手机震动授权-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
@@ -16,6 +20,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.车票">
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity android:name=".note.Edit" />
+        <activity android:name=".note.Search" />
+
         <activity
             android:name=".lock.LockActivity"
             android:excludeFromRecents="true"
@@ -51,7 +61,7 @@
         </receiver>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".note.NoteActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,6 +73,20 @@
         <service
             android:name=".lock.PlayService"
             android:process=":main" />
+
+        <provider
+            android:name=".note.NoteProvider"
+            android:authorities="dev.lyg.cp.note.provider"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name=".note.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".note.AlarmService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
