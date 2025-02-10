@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -31,9 +31,9 @@ import java.util.Locale;
 
 import dev.lyg.cp.R;
 import dev.lyg.cp.alert.ViewLoading;
+import dev.lyg.cp.alert.WheelView;
 import dev.lyg.cp.util.DBHelper;
 import dev.lyg.cp.util.FormatUtils;
-import dev.lyg.cp.alert.WheelView;
 import okhttp3.OkHttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,12 +45,13 @@ import java.io.IOException;
 public class SearchFragment extends Fragment {
     private LinearLayout dateImage, leftImage, rightImage;
     private DBHelper dbHelper;
-    private EditText trainnNumberEditText, seatEditText, remark1EditText, remark2EditText, remark3EditText, remark4EditText, checkEditText;
-    private MaterialButton btn_add, findTicketsBtn;
-    private TextView dateEditText, rightEditText, leftEditText, departureStationEditText, arrivalStationEditText;
+    private EditText trainnNumberEditText, seatEditText, remark1EditText, remark2EditText, remark3EditText, remark4EditText;
+    private MaterialButton btn_add;
+    private TextView dateEditText, rightEditText, leftEditText, departureStationEditText, arrivalStationEditText, checkEditText;
     private boolean isRequestInProgress = false;
     // 修改成员变量声明
     private int index1 = -1; // selectView1 的索引
+    private int index2 = -1; // selectView2 的索引
     private List<String> menuItems1 = new ArrayList<>(); // selectView1 的数据
     private List<String> menuItems2 = new ArrayList<>(); // selectView2 的数据
     private List<String> stationNameItems1 = new ArrayList<>();
@@ -78,7 +79,6 @@ public class SearchFragment extends Fragment {
         dbHelper = new DBHelper(SearchFragment.this.getContext());
 
         btn_add = view.findViewById(R.id.btn_add);
-        findTicketsBtn = view.findViewById(R.id.findTicketsBtn); // view.
 
         leftImage = view.findViewById(R.id.departureTime);
         rightImage = view.findViewById(R.id.arrivalTime);
@@ -106,8 +106,10 @@ public class SearchFragment extends Fragment {
         getTrainNo(departureStationEditText, 1);
         getTrainNo(arrivalStationEditText, 2);
 
-        findTicketsBtn.setOnClickListener(v -> loadingDialog());
         btn_add.setOnClickListener(v -> {
+
+            // String trainNo = getArguments().getString("trainNo");
+            // int id = Intent.getIntentOld().getIntExtra("id", 0);
 
             if (leftEditText.length() > 0 && rightEditText.length() > 0 &&
                     dateEditText.length() > 0 && trainnNumberEditText.length() > 0 &&
@@ -157,13 +159,72 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void loadingDialog() {
+    private void showTicketGate() {
+        if (trainnNumberEditText.getText().length() == 0 || dateEditText.getText().length() == 0) {
+            Toast.makeText(requireContext(), "请先填写车次和日期", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // 创建 OkHttpClient 实例
+        OkHttpClient client = new OkHttpClient();
+
+        // 构造请求 URL
+        String url = "https://mobile.12306.cn/weixin/wxcore/getPlatform" +
+                "?trainCode=" + trainnNumberEditText.getText().toString() +
+                "&stationName=" + departureStationEditText.getText().toString() +
+                "&stationCode=NIW&date=" + dateEditText.getText().toString();
+
+        // 创建请求对象
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        // 发送请求并异步获取响应
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("Request", "网络请求失败: " + e.getMessage(), e);
+                getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+                    try {
+                        // 解析响应 JSON
+                        String responseBody = response.body().string();
+
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+
+                        // 提取检票口信息
+                        JSONObject data = jsonResponse.getJSONObject("data");
+                        String result = data.getString("result");
+                        Log.d("Request", "Network response: " + result);
+
+                        // 使用正则提取检票口信息（15A、15B）
+                        String ticketGateInfo = FormatUtils.extractTicketGateInfo(result);
+
+                        // 在 UI 线程更新 TextView 显示检票口信息
+                        getActivity().runOnUiThread(() -> checkEditText.setText(ticketGateInfo));
+                    } catch (Exception e) {
+                        Log.d("Request2", "解析数据失败" + e);
+                        getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "解析数据失败", Toast.LENGTH_SHORT).show());
+                    }
+                } else {
+                    Log.e("Request", "响应中的错误: " + response.code());
+                    getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败，状态码" + response.code(), Toast.LENGTH_SHORT).show());
+                }
+            }
+        });
     }
 
     private void getTrainNo(TextView selectView, int lor) {
 
         selectView.setOnClickListener(v -> {
-            ViewLoading.show(getContext());
+            if (trainnNumberEditText.getText().length() == 0 || dateEditText.getText().length() == 0) {
+                Toast.makeText(requireContext(), "请先填写车次和日期", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             Log.d("getTrainNo: ", trainnNumberEditText.getText() + " " + FormatUtils.convertDateToSimpleFormat(dateEditText.getText().toString()));
 
@@ -207,6 +268,11 @@ public class SearchFragment extends Fragment {
 
     private void demonstrateStationStation(String trainNo, String trainDate, TextView selectView, OkHttpClient client, int lor) {
         if (isRequestInProgress) return; // 如果已经进行了，请防止进一步的要求
+
+        if (trainNo.length() == 0 || trainDate.length() == 0) {
+            Toast.makeText(requireContext(), "请输入车次和日期", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         isRequestInProgress = true;
 
@@ -289,104 +355,56 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void showTicketGate() {
-        // 创建 OkHttpClient 实例
-        OkHttpClient client = new OkHttpClient();
-
-        // 构造请求 URL
-        String url = "https://mobile.12306.cn/weixin/wxcore/getPlatform" +
-                "?trainCode=" + trainnNumberEditText.getText().toString() +
-                "&stationName=" + departureStationEditText.getText().toString() +
-                "&stationCode=NIW&date=" + dateEditText.getText().toString();
-
-        // 创建请求对象
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        // 发送请求并异步获取响应
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("Request", "网络请求失败: " + e.getMessage(), e);
-                getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    try {
-                        // 解析响应 JSON
-                        String responseBody = response.body().string();
-
-                        JSONObject jsonResponse = new JSONObject(responseBody);
-
-                        // 提取检票口信息
-                        JSONObject data = jsonResponse.getJSONObject("data");
-                        String result = data.getString("result");
-                        Log.d("Request", "Network response: " + result);
-
-                        // 使用正则提取检票口信息（15A、15B）
-                        String ticketGateInfo = FormatUtils.extractTicketGateInfo(result);
-
-                        // 在 UI 线程更新 TextView 显示检票口信息
-                        getActivity().runOnUiThread(() -> checkEditText.setText(ticketGateInfo));
-                    } catch (Exception e) {
-                        Log.d("Request2", "解析数据失败" + e);
-                        getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "解析数据失败", Toast.LENGTH_SHORT).show());
-                    }
-                } else {
-                    Log.e("Request", "响应中的错误: " + response.code());
-                    getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败，状态码" + response.code(), Toast.LENGTH_SHORT).show());
-                }
-            }
-        });
-    }
-
     private void showScrollableMenu(TextView selectView, int lor) {
         ViewLoading.dismiss(getContext());
 
-        // 创建对话框
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle(lor == 1 ? "选择出发站" : "选择到达站");
+        // 加载自定义弹窗布局
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.layout_edit_dialog, null);
+        WheelView wv = dialogView.findViewById(R.id.wheel_view_wv);
+        TextView tvCancel = dialogView.findViewById(R.id.tv_cancel);
+        TextView tvEnsure = dialogView.findViewById(R.id.tv_ensure);
 
-        // 获取对应的数据列表
+        // 设置数据
         List<String> currentMenuItems = (lor == 1) ? menuItems1 : menuItems2;
         List<String> currentStationNames = (lor == 1) ? stationNameItems1 : stationNameItems2;
         List<String> currentArriveTime = (lor == 1) ? arriveTimeItems1 : arriveTimeItems2;
         List<String> currentStartTime = (lor == 1) ? startTimeItems1 : startTimeItems2;
 
-        // 加载自定义布局
-        View outerView = LayoutInflater.from(getContext()).inflate(R.layout.wheel_view, null);
-        WheelView wv = outerView.findViewById(R.id.wheel_view_wv);
-        wv.setItems(currentMenuItems);  // 设置选项数据
-        wv.setSeletion(0);  // 默认选中第一项
+        //判断currentMenuItems为空
+        if (currentMenuItems.size() == 0) {
+            Toast.makeText(getContext(), "暂无数据", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        wv.setItems(currentMenuItems);
 
-        // 监听滚轮选择
         wv.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {
-                // 更新选中的值
                 if (lor == 1) {
-                    index1 = selectedIndex - 1;
-                    selectedItemCopy[0] = currentStationNames.get(selectedIndex - 1);
-                    selectedItemCopy[2] = currentStartTime.get(selectedIndex - 1);
+                    index1 = selectedIndex - 2;
+                    selectedItemCopy[0] = currentStationNames.get(selectedIndex - 2);
+                    selectedItemCopy[2] = currentStartTime.get(selectedIndex - 2);
                 } else {
-                    selectedItemCopy[0] = currentStationNames.get(selectedIndex - 1);
-                    selectedItemCopy[1] = currentArriveTime.get(selectedIndex - 1);
+                    selectedItemCopy[0] = currentStationNames.get(selectedIndex - 2);
+                    selectedItemCopy[1] = currentArriveTime.get(selectedIndex - 2);
                 }
             }
         });
 
-        // 设置自定义布局
-        builder.setView(outerView);
+        // 创建 AlertDialog
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(dialogView)
+                .create();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_cart_et_balance);
 
-        // 确认按钮，更新 UI
-        builder.setPositiveButton("确认", (dialog, which) -> {
+
+        // 取消按钮
+        tvCancel.setOnClickListener(v -> dialog.dismiss());
+
+        // 确认按钮
+        tvEnsure.setOnClickListener(v -> {
             if (selectedItemCopy[0] != null) {
                 selectView.setText(selectedItemCopy[0]);
-
                 if (lor == 1) {
                     leftEditText.setText(selectedItemCopy[2]);
                 } else if (lor == 2) {
@@ -396,12 +414,11 @@ public class SearchFragment extends Fragment {
             } else {
                 Log.d("ScrollableMenu", "未选择任何项");
             }
+            dialog.dismiss();
         });
 
-        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
-
         // 显示对话框
-        builder.create().show();
+        dialog.show();
     }
 
     @Override

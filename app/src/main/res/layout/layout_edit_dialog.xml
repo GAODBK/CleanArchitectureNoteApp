@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_cart_et_balance"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <!-- 滚动选择器 -->
+    <dev.lyg.cp.alert.WheelView
+        android:id="@+id/wheel_view_wv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- 底部按钮 -->
+    <include layout="@layout/edit_dialog_bottom"/>
+</LinearLayout>

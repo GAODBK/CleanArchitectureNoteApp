@@ -11,16 +11,6 @@ import androidx.annotation.StyleRes;
 
 import dev.lyg.cp.R;
 
-/**
- * <pre>
- *     @author yangchong
- *     blog  : https://github.com/yangchong211
- *     time  : 2017/5/2
- *     desc  : dialog的base类
- *     revise:
- *     GitHub: https://github.com/yangchong211/YCDialog
- * </pre>
- */
 public class BaseCustomDialog<T> extends Dialog {
 
     protected Context mContext;

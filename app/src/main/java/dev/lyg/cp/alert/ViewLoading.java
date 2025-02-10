@@ -15,17 +15,6 @@ import androidx.annotation.NonNull;
 
 import dev.lyg.cp.R;
 
-
-/**
- * <pre>
- *     @author yangchong
- *     blog  : https://github.com/yangchong211
- *     time  : 2016/06/4
- *     desc  : 全局加载弹窗
- *     revise:
- *     GitHub: https://github.com/yangchong211/YCDialog
- * </pre>
- */
 public class ViewLoading extends BaseCustomDialog<ViewLoading> {
 
     private static ViewLoading loadDialog;
@@ -126,14 +115,6 @@ public class ViewLoading extends BaseCustomDialog<ViewLoading> {
         loadDialog.show();
     }
 
-
-    /**
-     * 销毁加载窗
-     * 注意在try …… catch中，关于return和finally的执行顺序，看这篇博客：
-     * https://github.com/yangchong211/YCBlogs
-     *
-     * @param context 上下文
-     */
     public static void dismiss(Context context) {
         try {
             if (context instanceof Activity) {
