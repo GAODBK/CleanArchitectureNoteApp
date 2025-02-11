@@ -1,9 +1,8 @@
-package dev.lyg.cp.unit_test;
+package dev.lyg.cp.ui.fragment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import dev.lyg.cp.R;
+import dev.lyg.cp.ui.fragment.LeaveFragment;
 
 public class NoteFragment extends Fragment {
     private ImageView qrCode;

@@ -1,4 +1,4 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.note.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

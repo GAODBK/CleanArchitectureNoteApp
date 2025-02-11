@@ -18,7 +18,6 @@
             android:background="@color/colorLabel"
             android:theme="@style/ThemeOverlay.AppCompat.NoActionBar"
             app:titleTextColor="#0E0E0E">
-            <!--            app:layout_scrollFlags="scroll|enterAlways">-->
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -29,7 +28,7 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
-                android:layout_width="350dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:background="@color/colorLabel"
@@ -50,7 +49,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/colorLabel"
-                app:srcCompat="@drawable/save" />
+                app:srcCompat="@drawable/add_group" />
             <!--            <ImageButton-->
             <!--                android:id="@+id/imageDeButton"-->
             <!--                android:layout_width="wrap_content"-->

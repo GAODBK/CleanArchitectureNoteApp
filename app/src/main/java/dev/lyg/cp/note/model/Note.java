@@ -1,4 +1,4 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.note.model;
 
 /**
  * 对应数据库的实体类

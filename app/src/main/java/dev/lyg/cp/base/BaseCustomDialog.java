@@ -1,4 +1,4 @@
-package dev.lyg.cp.alert;
+package dev.lyg.cp.base;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -23,11 +23,6 @@ public class BaseCustomDialog<T> extends Dialog {
      */
     protected int mGravity = -1;
     protected boolean isFullScreen = false;
-
-    public BaseCustomDialog(Context context) {
-        super(context, R.style.CustomBottomDialog);
-        mContext = context;
-    }
 
     public BaseCustomDialog(Context context, @StyleRes int style) {
         super(context, style);
@@ -55,17 +50,6 @@ public class BaseCustomDialog<T> extends Dialog {
         }
     }
 
-    /**
-     * 设置动画样式
-     *
-     * @param animId
-     * @return
-     */
-    public T setWindowAnimation(int animId) {
-        mAnimId = animId;
-        return (T) this;
-    }
-
 
     /**
      * 设置显示位置
@@ -75,17 +59,6 @@ public class BaseCustomDialog<T> extends Dialog {
      */
     public T setLocation(int gravity) {
         mGravity = gravity;
-        return (T) this;
-    }
-
-    /**
-     * 设置全屏幕显示
-     *
-     * @param flag
-     * @return
-     */
-    public T setFullScreen(boolean flag) {
-        isFullScreen = flag;
         return (T) this;
     }
 

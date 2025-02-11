@@ -1,4 +1,4 @@
-package dev.lyg.cp.unit_test;
+package dev.lyg.cp.ui.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -51,7 +51,6 @@ public class SearchFragment extends Fragment {
     private boolean isRequestInProgress = false;
     // 修改成员变量声明
     private int index1 = -1; // selectView1 的索引
-    private int index2 = -1; // selectView2 的索引
     private List<String> menuItems1 = new ArrayList<>(); // selectView1 的数据
     private List<String> menuItems2 = new ArrayList<>(); // selectView2 的数据
     private List<String> stationNameItems1 = new ArrayList<>();

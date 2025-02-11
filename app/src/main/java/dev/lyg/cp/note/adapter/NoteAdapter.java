@@ -1,5 +1,4 @@
-package dev.lyg.cp.note;
-
+package dev.lyg.cp.note.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,11 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 import dev.lyg.cp.R;
+import dev.lyg.cp.note.model.Note;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private Context mContext;
@@ -123,7 +121,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.textTime.setText(oneNote.getTextTime());
         holder.flagText.setText(oneNote.getFlag());
         if (oneNote.getTag() < tag_color.length) {
-            Glide.with(mContext).load(tag_color[oneNote.getTag()]).into(holder.tag);
+            holder.tag.setImageResource(tag_color[oneNote.getTag()]);
         }
         //有提醒就设置显示
         if (oneNote.isbAlarm() || oneNote.getAlarm().length() > 0) {
@@ -133,22 +131,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         }
 
         if (mItemClickListener != null) {
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 这里利用回调来给RecyclerView设置点击事件
-                    mItemClickListener.onItemClick(position);
-                }
+            holder.cardView.setOnClickListener(v -> {
+                // 这里利用回调来给RecyclerView设置点击事件
+                mItemClickListener.onItemClick(position);
             });
         }
         if (mItemLongClickListener != null) {
-            holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    // 这里利用回调来给RecyclerView设置长按事件
-                    mItemLongClickListener.onItemLongClick(position);
-                    return true;
-                }
+            holder.cardView.setOnLongClickListener(v -> {
+                // 这里利用回调来给RecyclerView设置长按事件
+                mItemLongClickListener.onItemLongClick(position);
+                return true;
             });
         }
     }

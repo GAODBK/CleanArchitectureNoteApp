@@ -1,34 +1,9 @@
-```
-yourpackage/
-├── activities/      # Activity 相关
-│   ├── MainActivity.java         # 负责 BottomNavigationView 绑定和 Fragment 切换
-│   ├── LockActivity.java         # 仿音乐锁屏页面（横滑退出）
-├── fragments/       # Fragment 相关
-│   ├── HomeFragment.java        # 主页，显示车次列表，支持折叠/展开效果
-│   ├── EnterFragment.java       # 录入车次信息并存入数据库
-├── database/        # 数据库相关（SQLite）
-│   ├── DBHelper.java            # SQLiteOpenHelper，管理数据库表的创建和升级
-│   ├── TrainDAO.java            # 操作数据库的 DAO 类，包含增删改查方法
-├── models/          # 数据模型
-│   └── Train.java              # 车次信息的数据模型
-├── network/         # 网络请求
-│   ├── ApiService.java        # 负责请求远程 API 获取车次信息
-├── services/        # 后台服务
-│   ├── PlayService.java       # 负责播放相关任务（如锁屏音乐）
-├── utils/           # 工具类
-│   ├── NotificationUtil.java  # 发送通知（如火车出发前提醒）
-│   ├── AndroidWorkaround.java # 适配 Android 设备，处理 UI 兼容性问题
-│   ├── HintTextView.java      # 自定义可变色的提示文本
-│   ├── SlidingFinishLayout.java # 横滑退出页面的自定义 View
-├── widgets/         # 自定义 UI 组件
-│   ├── StackScrollView.java   # 自定义滚动组件，实现 iOS 通知折叠效果
-│   ├── StackLayout.java       # 折叠/展开视图的容器
-│   ├── IScrollSubscription.java # 滚动订阅接口
-│   ├── IScrollListener.java    # 滚动监听接口
-│   ├── WeekDatePicker.java    # 自定义周日期选择器
-│   ├── StationPicker.java     # 自定义站点选择器
-
-```
+| 1                                                            |                                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](https://tgimgbed-f3l.pages.dev/file/1737368065280_Screenshot_1737368022.png) | [fragment_home](app/src/main/res/layout/fragment_home.xml) and [note_item](app/src/main/res/layout/note_item.xml) |
+| ![](https://tgimgbed-f3l.pages.dev/file/1737368071106_Screenshot_1737368036.png) | [fragment_me](app/src/main/res/layout/fragment_me.xml)       |
+| ![](https://tgimgbed-f3l.pages.dev/file/1737368071337_Screenshot_1737368028.png) | [fragment_searh](app/src/main/res/layout/fragment_searh.xml) and layout/fragment_note.xml |
+| ![](https://tgimgbed-f3l.pages.dev/file/1737368073719_Screenshot_1737368033.png) | [fragment_leave](app/src/main/res/layout/fragment_leave.xml) and app/src/main/res/drawable/barcode.xml |
 
 ### 1. 修改后的 Shell 脚本（CSV 和 JSON 格式）
 
@@ -126,15 +101,15 @@ echo "JSON 文件已生成：$json_file"
 ## License
 
    	Copyright 2025 gaodbk
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    
-       http://www.apache.org/licenses/LICENSE-2.0
-    
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+   	
+   	Licensed under the Apache License, Version 2.0 (the "License");
+   	you may not use this file except in compliance with the License.
+   	You may obtain a copy of the License at
+   	
+   	   http://www.apache.org/licenses/LICENSE-2.0
+   	
+   	Unless required by applicable law or agreed to in writing, software
+   	distributed under the License is distributed on an "AS IS" BASIS,
+   	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   	See the License for the specific language governing permissions and
+   	limitations under the License.

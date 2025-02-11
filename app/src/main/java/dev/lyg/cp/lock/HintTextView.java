@@ -12,9 +12,6 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
-/**
- * @author ztk
- */
 public class HintTextView extends AppCompatTextView {
 
     private Paint paint;

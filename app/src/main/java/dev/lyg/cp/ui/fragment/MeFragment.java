@@ -1,4 +1,4 @@
-package dev.lyg.cp.unit_test;
+package dev.lyg.cp.ui.fragment;
 
 import android.os.Bundle;
 

@@ -12,11 +12,11 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import dev.lyg.cp.R;
+import dev.lyg.cp.base.OnWheelChangedListener;
 
 /**
  * @author cncoderx
@@ -291,12 +291,6 @@ public class WheelView extends View {
         return mCyclic;
     }
 
-    public void setCyclic(boolean cyclic) {
-        mCyclic = cyclic;
-        mScroller.reset();
-        invalidate();
-    }
-
     public float getTextSize() {
         return mTextPaint.getTextSize();
     }
@@ -316,40 +310,8 @@ public class WheelView extends View {
         invalidate();
     }
 
-    public int getSelectedTextColor() {
-        return mSelectedTextPaint.getColor();
-    }
-
-    public void setSelectedTextColor(int color) {
-        mSelectedTextPaint.setColor(color);
-        invalidate();
-    }
-
     public int getItemSize() {
         return mEntries.size();
-    }
-
-    public CharSequence getItem(int index) {
-        if (index < 0 || index >= mEntries.size())
-            return null;
-
-        return mEntries.get(index);
-    }
-
-    public CharSequence getCurrentItem() {
-        return getItem(getCurrentIndex());
-    }
-
-    public int getCurrentIndex() {
-        return mScroller.getCurrentIndex();
-    }
-
-    public void setCurrentIndex(int index) {
-        setCurrentIndex(index, false);
-    }
-
-    public void setCurrentIndex(int index, boolean animated) {
-        mScroller.setCurrentIndex(index, animated);
     }
 
     public void setEntries(CharSequence... entries) {
@@ -361,18 +323,6 @@ public class WheelView extends View {
         invalidate();
     }
 
-    public void setEntries(Collection<? extends CharSequence> entries) {
-        mEntries.clear();
-        if (entries != null && entries.size() > 0) {
-            mEntries.addAll(entries);
-        }
-        mScroller.reset();
-        invalidate();
-    }
-
-    public OnWheelChangedListener getOnWheelChangedListener() {
-        return mScroller.onWheelChangedListener;
-    }
 
     public void setOnWheelChangedListener(OnWheelChangedListener onWheelChangedListener) {
         mScroller.onWheelChangedListener = onWheelChangedListener;

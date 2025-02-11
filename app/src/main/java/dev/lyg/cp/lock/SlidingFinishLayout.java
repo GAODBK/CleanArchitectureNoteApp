@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
-/**
- * @author ztk
- */
 public class SlidingFinishLayout extends RelativeLayout {
     /**
      * 滑动的最小距离

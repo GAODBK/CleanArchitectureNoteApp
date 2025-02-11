@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
-import dev.lyg.cp.lock.LockActivity;
-
 import androidx.annotation.Nullable;
+
+import dev.lyg.cp.ui.activity.LockActivity;
 
 public class PlayService extends Service {
     ScreenBroadcastReceiver screenBroadcastReceiver;

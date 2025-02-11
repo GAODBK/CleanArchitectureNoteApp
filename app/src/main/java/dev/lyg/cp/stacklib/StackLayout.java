@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
-//import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -119,48 +118,6 @@ public class StackLayout extends ViewGroup implements IScrollListener {
         this.status = status;
     }
 
-    public boolean isAnimating() {
-        return isAnimating;
-    }
-
-    public void setCollapseCount(int collapseCount) {
-        this.collapseCount = collapseCount;
-    }
-
-    public long getAnimatingDuration() {
-        return animatingDuration;
-    }
-
-    public void setAnimatingDuration(long animatingDuration) {
-        this.animatingDuration = animatingDuration;
-        valueAnimator = null;
-    }
-
-    public void addListener(StackStatusListener listener) {
-        if (listener != null && !listenerSet.contains(listener)) {
-            listenerSet.add(listener);
-        }
-    }
-
-    public void removeListener(StackStatusListener listener) {
-        if (listener != null && !listenerSet.contains(listener)) {
-            listenerSet.add(listener);
-        }
-    }
-
-    /**
-     * 首个View下面叠加的view显示出来的间隙
-     *
-     * @param collapseGap 单位:dp
-     */
-    public void setCollapseGap(int collapseGap) {
-        this.collapseGap = collapseGap;
-    }
-
-    public Adapter getAdapter() {
-        return adapter;
-    }
-
     public void setAdapter(Adapter adapter) {
         this.adapter = adapter;
         if (adapter != null) {
@@ -187,23 +144,20 @@ public class StackLayout extends ViewGroup implements IScrollListener {
     private ValueAnimator getValueAnimator() {
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofFloat(1, 0);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    ratio = (float) animation.getAnimatedValue();
-                    if (status == EXPAND) {
-                        // 当前处于展开状态  正在向 收起状态过渡
-                        scaleXAnimatingParam = sScaleXAnimateParam * (1 - animation.getAnimatedFraction());
-                    } else {
-                        scaleXAnimatingParam = sScaleXAnimateParam * (1 - animation.getAnimatedFraction());
-                    }
+            valueAnimator.addUpdateListener(animation -> {
+                ratio = (float) animation.getAnimatedValue();
+                if (status == EXPAND) {
+                    // 当前处于展开状态  正在向 收起状态过渡
+                    scaleXAnimatingParam = sScaleXAnimateParam * (1 - animation.getAnimatedFraction());
+                } else {
+                    scaleXAnimatingParam = sScaleXAnimateParam * (1 - animation.getAnimatedFraction());
+                }
 
-                    requestLayout();
-                    needRelayout = true;
-                    needReMeasure = true;
-                    for (StackStatusListener listener : listenerSet) {
-                        listener.onStatusChangedProgress(status == COLLAPSE ? 1 - ratio : ratio, getMeasuredHeight(), collapseStatusHeight, totalHeight);
-                    }
+                requestLayout();
+                needRelayout = true;
+                needReMeasure = true;
+                for (StackStatusListener listener : listenerSet) {
+                    listener.onStatusChangedProgress(status == COLLAPSE ? 1 - ratio : ratio, getMeasuredHeight(), collapseStatusHeight, totalHeight);
                 }
             });
             valueAnimator.addListener(new Animator.AnimatorListener() {
@@ -794,10 +748,6 @@ public class StackLayout extends ViewGroup implements IScrollListener {
         }
 
         public abstract int getItemCount();
-
-        public long getItemId(int position) {
-            return NO_ID;
-        }
 
         /**
          * 发送消息给StackLayout的所有viewholder，可用于局部刷新

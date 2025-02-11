@@ -16,14 +16,18 @@ import android.widget.Toast;
 
 import dev.lyg.cp.lock.NotificationUtil;
 import dev.lyg.cp.lock.PlayService;
-import dev.lyg.cp.unit_test.*;
+import dev.lyg.cp.ui.activity.NoteActivity;
+import dev.lyg.cp.ui.fragment.HomeFragment;
+import dev.lyg.cp.ui.fragment.LeaveFragment;
+import dev.lyg.cp.ui.fragment.MeFragment;
+import dev.lyg.cp.ui.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Bottom";
     private BottomNavigationView bottomNavigationView;
 
-    private final Fragment[] fragments = new Fragment[4];
+    private final Fragment[] fragments = new Fragment[5];
     private int currentFragmentIndex = -1;
 
     private static final int REQUEST_CODE_POST_NOTIFICATIONS = 101;
@@ -58,10 +62,15 @@ public class MainActivity extends AppCompatActivity {
                 switchFragment(0);
             } else if (itemId == R.id.search) {
                 switchFragment(1);
+            } else if (itemId == R.id.setting) {
+                // 直接启动 NoteActivity
+                Intent intent3 = new Intent(this, NoteActivity.class);
+                startActivity(intent3);
+                return false; // 阻止选中状态变化
             } else if (itemId == R.id.sticky) {
-                switchFragment(2);
-            } else if (itemId == R.id.me) {
                 switchFragment(3);
+            } else if (itemId == R.id.me) {
+                switchFragment(4);
             }
             return true;
         });
@@ -70,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
     private void initializeFragments() {
         fragments[0] = new HomeFragment();
         fragments[1] = new SearchFragment();
-        fragments[2] = new LeaveFragment();
-        fragments[3] = new MeFragment();
+        fragments[3] = new LeaveFragment();
+        fragments[4] = new MeFragment();
     }
 
     // 1 15 10

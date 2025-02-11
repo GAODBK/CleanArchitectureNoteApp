@@ -1,4 +1,4 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.note.alarm;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -25,6 +25,8 @@ import java.util.List;
 
 
 import dev.lyg.cp.R;
+import dev.lyg.cp.note.model.Note;
+import dev.lyg.cp.ui.activity.Edit;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private int alarmId;
@@ -191,6 +193,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         return list.get(0);
     }
-
-
 }

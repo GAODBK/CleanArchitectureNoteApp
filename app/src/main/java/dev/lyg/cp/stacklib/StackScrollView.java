@@ -19,12 +19,6 @@ import java.util.List;
 
 import static android.view.MotionEvent.ACTION_DOWN;
 
-/**
- * @author lwy 2019/12/18
- * @version v1.0.0
- * @name StackScrollView
- * @description 折叠展开容器组件的滚动扩展容器，可结合 StackLayout 实现recycleview的缓存viewholder机制
- */
 public class StackScrollView extends ScrollView implements IScrollSubscription {
     public static final int UP = 0;
     public static final int DOWN = 1;

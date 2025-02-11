@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.widget.Scroller;
 
+import dev.lyg.cp.base.OnWheelChangedListener;
+
 /**
  * @author cncoderx
  */

@@ -21,13 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.车票">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.NoteActivity"
             android:exported="false" />
-        <activity android:name=".note.Edit" />
-        <activity android:name=".note.Search" />
+        <activity android:name=".ui.activity.Edit" />
+        <activity android:name=".ui.activity.Search" />
 
         <activity
-            android:name=".lock.LockActivity"
+            android:name=".ui.activity.LockActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:label="@string/title_activity_lock"
@@ -49,7 +49,7 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
         <receiver
-            android:name=".unit_test.aWordWidget"
+            android:name=".widget.aWordWidget"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -61,7 +61,7 @@
         </receiver>
 
         <activity
-            android:name=".note.NoteActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -75,16 +75,16 @@
             android:process=":main" />
 
         <provider
-            android:name=".note.NoteProvider"
+            android:name=".note.database.NoteProvider"
             android:authorities="dev.lyg.cp.note.provider"
             android:enabled="true"
             android:exported="true" />
         <receiver
-            android:name=".note.AlarmReceiver"
+            android:name=".note.alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".note.AlarmService"
+            android:name=".note.alarm.AlarmService"
             android:enabled="true"
             android:exported="true" />
     </application>

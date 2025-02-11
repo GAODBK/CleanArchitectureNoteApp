@@ -1,4 +1,4 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.ui.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -62,7 +62,11 @@ public class Edit extends AppCompatActivity implements TimePickerDialog.OnTimeSe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        requestWindowFeature(Window.FEATURE_NO_TITLE);//全屏显示
+        // 使状态栏图标为白色，旗帜布局无限制
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
         setContentView(R.layout.activity_edit);
 
         //加载toolbar
@@ -92,17 +96,14 @@ public class Edit extends AppCompatActivity implements TimePickerDialog.OnTimeSe
         edt.setText(mainText);
 
         //长按隐藏提醒时间显示框
-        alarmView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (v.getId() == R.id.alarmView || v.getId() == R.id.alarmButton) {
-                    //删除提醒信息
-                    alarm = "";
-                    //隐藏textView
-                    alarmView.setVisibility(View.GONE);
-                }
-                return true;
+        alarmView.setOnLongClickListener(v -> {
+            if (v.getId() == R.id.alarmView || v.getId() == R.id.alarmButton) {
+                //删除提醒信息
+                alarm = "";
+                //隐藏textView
+                alarmView.setVisibility(View.GONE);
             }
+            return true;
         });
 
         //设置提醒时间显示

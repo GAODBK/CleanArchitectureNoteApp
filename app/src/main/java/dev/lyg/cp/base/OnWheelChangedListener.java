@@ -1,4 +1,6 @@
-package dev.lyg.cp.alert;
+package dev.lyg.cp.base;
+
+import dev.lyg.cp.alert.WheelView;
 
 /**
  * @author cncoderx

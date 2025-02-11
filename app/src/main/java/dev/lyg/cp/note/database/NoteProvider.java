@@ -1,4 +1,4 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.note.database;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -6,10 +6,11 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import dev.lyg.cp.note.database.NoteDBHelper;
 
 public class NoteProvider extends ContentProvider {
     public static final int NOTE_DIR = 0;//访问所有数据

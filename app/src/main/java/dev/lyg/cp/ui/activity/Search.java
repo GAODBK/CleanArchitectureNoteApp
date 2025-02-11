@@ -1,8 +1,7 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,7 +9,7 @@ import android.os.Bundle;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -26,6 +25,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import dev.lyg.cp.R;
+import dev.lyg.cp.note.alarm.AlarmService;
+import dev.lyg.cp.note.model.Note;
+import dev.lyg.cp.note.adapter.NoteAdapter;
 
 public class Search extends AppCompatActivity {
     private SearchView searchView;
@@ -44,6 +46,11 @@ public class Search extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 使状态栏图标为白色，旗帜布局无限制
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
         setContentView(R.layout.note_search);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_search_view);
@@ -67,28 +74,24 @@ public class Search extends AppCompatActivity {
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
-        search_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mSearchAutoComplete.isShown()) {
-                    try {
-                        //如果搜索框中有文字，则会先清空文字，但网易云音乐是在点击返回键时直接关闭搜索框
-                        mSearchAutoComplete.setText("");
-                        Method method = searchView.getClass().getDeclaredMethod("onCloseClicked");
-                        method.setAccessible(true);
-                        method.invoke(searchView);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Intent it = new Intent();
-                    it.putExtra("iam", "search");
-                    it.putExtra("isChanged", isChanged);
-                    setResult(RESULT_OK, it);
-                    finish();
+        search_toolbar.setNavigationOnClickListener(v -> {
+            if (mSearchAutoComplete.isShown()) {
+                try {
+                    //如果搜索框中有文字，则会先清空文字，但网易云音乐是在点击返回键时直接关闭搜索框
+                    mSearchAutoComplete.setText("");
+                    Method method = searchView.getClass().getDeclaredMethod("onCloseClicked");
+                    method.setAccessible(true);
+                    method.invoke(searchView);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            } else {
+                Intent it1 = new Intent();
+                it1.putExtra("iam", "search");
+                it1.putExtra("isChanged", isChanged);
+                setResult(RESULT_OK, it1);
+                finish();
             }
-
         });
 
     }
@@ -110,7 +113,6 @@ public class Search extends AppCompatActivity {
         searchView.setQuery("", false);//设置文字
         searchView.clearFocus();//清除焦点
         //设置搜索框直接展开显示。左侧有放大镜(在搜索框外)
-        searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("搜索便签...");
         searchView.setMaxWidth(1200);
 
@@ -194,30 +196,27 @@ public class Search extends AppCompatActivity {
             dialog.setTitle("删除");
             dialog.setMessage("是否删除？");
             dialog.setCancelable(false);
-            dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    int cuId = 1;
-                    //如果这个备忘录有一个闹钟,取消它
-                    if (currentNoteList.get(position).isbAlarm()) {
-                        cancelAlarm(position);
-                    }
-                    cuId = currentNoteList.get(position).getId();
-
-                    //删除数据库对应的便签
-                    Uri uri = Uri.parse("content://dev.lyg.cp.note.provider/note");
-                    getContentResolver().delete(uri, "id = ?", new String[]{String.valueOf(cuId)});
-                    //更新数据库
-                    for (int i = currentNoteList.get(position).getNum() + 1; i <= noteListSize; i++) {
-                        ContentValues values = new ContentValues();
-                        values.put("num", i - 1);//重新设置记录在列表中的位置
-                        getContentResolver().update(uri, values, "num = ?", new String[]{String.valueOf(i)});
-                        values.clear();
-                    }
-                    currentNoteList.remove(position);
-                    //界面刷新
-                    adapter.notifyDataSetChanged();
+            dialog.setPositiveButton("确认", (dialog12, which) -> {
+                int cuId = 1;
+                //如果这个备忘录有一个闹钟,取消它
+                if (currentNoteList.get(position).isbAlarm()) {
+                    cancelAlarm(position);
                 }
+                cuId = currentNoteList.get(position).getId();
+
+                //删除数据库对应的便签
+                Uri uri = Uri.parse("content://dev.lyg.cp.note.provider/note");
+                getContentResolver().delete(uri, "id = ?", new String[]{String.valueOf(cuId)});
+                //更新数据库
+                for (int i = currentNoteList.get(position).getNum() + 1; i <= noteListSize; i++) {
+                    ContentValues values = new ContentValues();
+                    values.put("num", i - 1);//重新设置记录在列表中的位置
+                    getContentResolver().update(uri, values, "num = ?", new String[]{String.valueOf(i)});
+                    values.clear();
+                }
+                currentNoteList.remove(position);
+                //界面刷新
+                adapter.notifyDataSetChanged();
             });
             dialog.setNegativeButton("取消", (dialog1, which) -> {
             });

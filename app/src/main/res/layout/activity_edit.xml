@@ -12,7 +12,7 @@
         android:id="@+id/edit_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:background="@drawable/bottom_border"
         android:minHeight="?attr/actionBarSize"
@@ -22,8 +22,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_margin="5dp"
+        android:layout_height="30dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -85,17 +84,9 @@
                 android:id="@+id/currentFlag"
                 android:layout_width="84dp"
                 android:layout_height="match_parent"
-
                 android:layout_gravity="end"
                 android:layout_weight="2" />
         </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/alarmButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/alarm"
-            android:onClick="setAlarm" />
     </LinearLayout>
 
     <EditText
@@ -116,19 +107,18 @@
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|left|center_horizontal"
-        android:layout_margin="12dp"
-        android:layout_marginTop="-10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_weight="30"
         android:background="@drawable/bottom_border"
-        android:gravity="left"
+        android:gravity="start"
         android:hint="内容" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="0.93"
         android:alpha="0.8"
         android:orientation="horizontal">
@@ -139,7 +129,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="20"
-            android:background="@drawable/tag_container"
             android:gravity="center_vertical|center|center_horizontal"
             android:orientation="horizontal">
 

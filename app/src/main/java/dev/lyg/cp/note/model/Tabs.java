@@ -1,4 +1,4 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.note.model;
 
 public class Tabs {
     private int id;

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import dev.lyg.cp.R;
+import dev.lyg.cp.base.BaseCustomDialog;
 
 public class ViewLoading extends BaseCustomDialog<ViewLoading> {
 

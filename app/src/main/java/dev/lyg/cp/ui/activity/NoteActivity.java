@@ -1,17 +1,17 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.WindowManager;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -31,9 +30,11 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
-import android.os.Bundle;
-
 import dev.lyg.cp.R;
+import dev.lyg.cp.note.alarm.AlarmService;
+import dev.lyg.cp.note.model.Note;
+import dev.lyg.cp.note.adapter.NoteAdapter;
+import dev.lyg.cp.note.model.Tabs;
 
 public class NoteActivity extends AppCompatActivity {
     private FloatingActionButton btnFloatAdd;
@@ -55,11 +56,17 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 使状态栏图标为白色，旗帜布局无限制
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
+
         setContentView(R.layout.activity_note);
 
         main_toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(main_toolbar);
-        ActionBar actionBar = getSupportActionBar();
         imageButton = findViewById(R.id.imageButton);
         allTabs = findViewById(R.id.tabs);
 
@@ -98,102 +105,93 @@ public class NoteActivity extends AppCompatActivity {
         /**
          * 添加分组
          */
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        imageButton.setOnClickListener(v -> {
 
-                final EditText inputServer = new EditText(NoteActivity.this);
-                final AlertDialog.Builder dialog = new AlertDialog.Builder(NoteActivity.this);
-                dialog.setTitle("添加新分组").setView(inputServer).setIcon(R.drawable.group).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+            final EditText inputServer = new EditText(NoteActivity.this);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(NoteActivity.this);
+            dialog.setTitle("添加新分组")
+                    .setView(inputServer)
+                    .setIcon(R.drawable.group)
+                    .setNegativeButton(
+                            "取消", (dialog12, which) -> dialog12.dismiss()
+                    );
 
-                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String inputText = inputServer.getText().toString().trim();
-                        int tabCount = allTabs.getTabCount();
-                        Boolean isExist = false;
-                        for (int i = 0; i < tabsList.size(); i++) {
-                            if (inputText.equals(tabsList.get(i).getTabName().trim())) {
-                                isExist = true;
-                                break;
-                            }
-                        }
-                        if (isExist || inputText.isEmpty() || inputText.equals("首页")) {
-                            dialog.dismiss();
-                        } else {
-                            try {
-                                allTabs.addTab(allTabs.newTab().setText(inputText), tabCount);
-                                tabsList.add(new Tabs(0, tabCount, inputText));
-                                addTabToDataBase(tabCount, inputText);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+            dialog.setPositiveButton("确定", (dialog1, which) -> {
+                String inputText = inputServer.getText().toString().trim();
+                int tabCount = allTabs.getTabCount();
+                Boolean isExist = false;
+                for (int i = 0; i < tabsList.size(); i++) {
+                    if (inputText.equals(tabsList.get(i).getTabName().trim())) {
+                        isExist = true;
+                        break;
                     }
-                });
-                dialog.show();
-            }
+                }
+                if (isExist || inputText.isEmpty() || inputText.equals("首页")) {
+                    dialog1.dismiss();
+                } else {
+                    try {
+                        allTabs.addTab(allTabs.newTab().setText(inputText), tabCount);
+                        tabsList.add(new Tabs(0, tabCount, inputText));
+                        addTabToDataBase(tabCount, inputText);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            dialog.show();
         });
         //浮动的添加按钮
         btnFloatAdd = (FloatingActionButton) findViewById(R.id.btnFloatAdd);
-        btnFloatAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(NoteActivity.this, Edit.class);
-                //note列表有多少记录，position可以作为新note的位置(因为noteList是数组，下标为长度减一)
-                int position = noteList.size();
-                if (!flag.equals("首页")) {
-                    position = appointList.size();
-                }
-                String[] tabsArray = new String[tabsList.size()];
-                Calendar c = Calendar.getInstance();
-                String current_date = getCurrentDate(c);
-                String current_time = getCurrentTime(c);
-                it.putExtra("id", 0);
-                it.putExtra("num", position);
-                it.putExtra("tag", 4);
-                it.putExtra("textDate", current_date);
-                it.putExtra("textTime", current_time);
-                it.putExtra("alarm", "");
-                it.putExtra("noteTitle", "");
-                it.putExtra("mainText", "");
-
-                if (flag.equals("首页")) {
-                    it.putExtra("flag", "其他");
-                    int tabCount = allTabs.getTabCount();
-
-                    //就一个首页标签，则自动添加"其他"标签
-                    if (tabCount == 1) {
-                        allTabs.addTab(allTabs.newTab().setText("其他"), tabCount);
-                        tabsList.add(new Tabs(0, tabCount, "其他"));
-                        tabsArray = new String[]{"其他"};
-                        addTabToDataBase(tabCount, "其他");
-                    } else {
-                        for (int i = 0; i < tabsList.size(); i++) {
-                            tabsArray[i] = tabsList.get(i).getTabName();
-                        }
-                    }
-                } else {
-                    it.putExtra("flag", flag);
-                    tabsArray[0] = flag;
-                    for (int i = 0, j = 1; i < tabsList.size(); i++, j++) {
-                        String currentFlag = tabsList.get(i).getTabName();
-                        if (flag.equals(currentFlag)) {
-                            j--;
-                            continue;
-                        }
-                        tabsArray[j] = currentFlag;
-                    }
-                }
-
-                it.putExtra("tabsArray", tabsArray);
-                startActivityForResult(it, position);
+        btnFloatAdd.setOnClickListener(v -> {
+            Intent it = new Intent(NoteActivity.this, Edit.class);
+            //note列表有多少记录，position可以作为新note的位置(因为noteList是数组，下标为长度减一)
+            int position = noteList.size();
+            if (!flag.equals("首页")) {
+                position = appointList.size();
             }
+            String[] tabsArray = new String[tabsList.size()];
+            Calendar c = Calendar.getInstance();
+            String current_date = getCurrentDate(c);
+            String current_time = getCurrentTime(c);
+            it.putExtra("id", 0);
+            it.putExtra("num", position);
+            it.putExtra("tag", 4);
+            it.putExtra("textDate", current_date);
+            it.putExtra("textTime", current_time);
+            it.putExtra("alarm", "");
+            it.putExtra("noteTitle", "");
+            it.putExtra("mainText", "");
+
+            if (flag.equals("首页")) {
+                it.putExtra("flag", "其他");
+                int tabCount = allTabs.getTabCount();
+
+                //就一个首页标签，则自动添加"其他"标签
+                if (tabCount == 1) {
+                    allTabs.addTab(allTabs.newTab().setText("其他"), tabCount);
+                    tabsList.add(new Tabs(0, tabCount, "其他"));
+                    tabsArray = new String[]{"其他"};
+                    addTabToDataBase(tabCount, "其他");
+                } else {
+                    for (int i = 0; i < tabsList.size(); i++) {
+                        tabsArray[i] = tabsList.get(i).getTabName();
+                    }
+                }
+            } else {
+                it.putExtra("flag", flag);
+                tabsArray[0] = flag;
+                for (int i = 0, j = 1; i < tabsList.size(); i++, j++) {
+                    String currentFlag = tabsList.get(i).getTabName();
+                    if (flag.equals(currentFlag)) {
+                        j--;
+                        continue;
+                    }
+                    tabsArray[j] = currentFlag;
+                }
+            }
+
+            it.putExtra("tabsArray", tabsArray);
+            startActivityForResult(it, position);
         });
     }
 
@@ -240,100 +238,102 @@ public class NoteActivity extends AppCompatActivity {
         builder.setTitle("删除分组");
         builder.setIcon(R.drawable.delete);
         builder.setMultiChoiceItems(items, selected,
-                new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which,
-                                        boolean isChecked) {
-                    }
+                (dialog, which, isChecked) -> {
                 });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    if (selected.length != 0) {
-                        Uri uri = Uri.parse("content://dev.lyg.cp.note.provider/note");
-                        Uri uriTabs = Uri.parse("content://dev.lyg.cp.note.provider/tabs");
-                        //先获取未删除之前便签的数量
-                        int mNum = 0;
-                        Cursor cursorNum = getContentResolver().query(uri, null, null, null, null);
-                        if (cursorNum != null) {
-                            mNum = cursorNum.getCount();
-                            Log.e("未删除之前便签的数量", String.valueOf(mNum));
-                        }
-                        cursorNum.close();
+        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            try {
+                if (selected.length != 0) {
+                    Uri uri = Uri.parse("content://dev.lyg.cp.note.provider/note");
+                    Uri uriTabs = Uri.parse("content://dev.lyg.cp.note.provider/tabs");
+                    //先获取未删除之前便签的数量
+                    int mNum = 0;
+                    Cursor cursorNum = getContentResolver().query(
+                            uri, null, null, null, null
+                    );
 
-                        for (int i = selected.length - 1; 0 <= i; i--) {
-                            if (selected[i]) {
-                                Log.e("删除分组中为true的", String.valueOf(selected[i]));
-                                //删除标签
-                                getContentResolver().delete(uriTabs, "tabName = ?", new String[]{String.valueOf(tabsList.get(i).getTabName())});
-                                //删除便签
-                                getContentResolver().delete(uri, "flag = ?", new String[]{tabsList.get(i).getTabName()});
-                                tabsList.remove(i);
-                                allTabs.removeTabAt(i + 1);
-                            }
-                        }
-
-                        //更新分组表中标签的position字段
-                        Cursor cursor = getContentResolver().query(uriTabs, null, null, null, null);
-                        if (cursor != null && cursor.getCount() != 0) {
-                            tabsList.clear();
-                            int pos = 1;
-                            ContentValues va = new ContentValues();
-                            while (cursor.moveToNext()) {
-                                int position = pos++;
-                                va.put("position", position);
-                                int newId = cursor.getInt(cursor.getColumnIndex("id"));
-                                getContentResolver().update(uriTabs, va, "id = ?", new String[]{String.valueOf(newId)});
-                                Log.e("更新分组position的tag", String.valueOf(cursor.getString(cursor.getColumnIndex("tabName"))));
-                                String tabName = cursor.getString(cursor.getColumnIndex("tabName"));
-                                Tabs tabs = new Tabs(newId, position, tabName);
-                                tabsList.add(tabs);
-                                va.clear();
-                            }
-                            cursor.close();
-                        }
-
-                        //更新便签在列表中的num位置
-                        Cursor cursorNote = getContentResolver().query(uri, null, null, null, null);
-                        if (cursorNote != null && cursorNote.getCount() != mNum) {
-                            noteList.clear();
-                            ContentValues vaNote = new ContentValues();
-                            int posNote = 0;
-                            while (cursorNote.moveToNext()) {
-                                int num = posNote++;
-                                vaNote.put("num", num);
-                                int noteId = cursorNote.getInt(cursorNote.getColumnIndex("id"));
-                                getContentResolver().update(uri, vaNote, "id = ?", new String[]{String.valueOf(noteId)});
-
-                                int tag = cursorNote.getInt(cursorNote.getColumnIndex("tag"));
-                                String textDate = cursorNote.getString(cursorNote.getColumnIndex("textDate"));
-                                String textTime = cursorNote.getString(cursorNote.getColumnIndex("textTime"));
-                                boolean alarm = cursorNote.getString(cursorNote.getColumnIndex("alarm")).length() > 1 ? true : false;
-                                String noteTitle = cursorNote.getString(cursorNote.getColumnIndex("noteTitle"));
-                                String mainText = cursorNote.getString(cursorNote.getColumnIndex("mainText"));
-                                String flagText = cursorNote.getString(cursorNote.getColumnIndex("flag"));
-                                Note temp = new Note(noteId, num, tag, textDate, textTime, alarm, noteTitle, mainText, flagText);
-                                noteList.add(temp);
-                                vaNote.clear();
-                            }
-                        }
-                        cursorNote.close();
-
-                        adapter.notifyDataSetChanged();
+                    if (cursorNum != null) {
+                        mNum = cursorNum.getCount();
+                        Log.e("未删除之前便签的数量", String.valueOf(mNum));
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    cursorNum.close();
+
+                    for (int i = selected.length - 1; 0 <= i; i--) {
+                        if (selected[i]) {
+                            Log.e("删除分组中为true的", String.valueOf(selected[i]));
+                            //删除标签
+                            getContentResolver().delete(
+                                    uriTabs,
+                                    "tabName = ?",
+                                    new String[]{String.valueOf(tabsList.get(i).getTabName())}
+                            );
+                            //删除便签
+                            getContentResolver().delete(uri, "flag = ?", new String[]{tabsList.get(i).getTabName()});
+                            tabsList.remove(i);
+                            allTabs.removeTabAt(i + 1);
+                        }
+                    }
+
+                    //更新分组表中标签的position字段
+                    Cursor cursor = getContentResolver().query(
+                            uriTabs, null, null, null, null
+                    );
+
+                    if (cursor != null && cursor.getCount() != 0) {
+                        tabsList.clear();
+                        int pos = 1;
+                        ContentValues va = new ContentValues();
+                        while (cursor.moveToNext()) {
+                            int position = pos++;
+                            va.put("position", position);
+                            int newId = cursor.getInt(cursor.getColumnIndex("id"));
+                            getContentResolver().update(uriTabs, va, "id = ?", new String[]{String.valueOf(newId)});
+                            Log.e("更新分组position的tag",
+                                    String.valueOf(cursor.getString(cursor.getColumnIndex("tabName")))
+                            );
+                            String tabName = cursor.getString(cursor.getColumnIndex("tabName"));
+                            Tabs tabs = new Tabs(newId, position, tabName);
+                            tabsList.add(tabs);
+                            va.clear();
+                        }
+                        cursor.close();
+                    }
+
+                    //更新便签在列表中的num位置
+                    Cursor cursorNote = getContentResolver().query(
+                            uri, null, null, null, null
+                    );
+                    if (cursorNote != null && cursorNote.getCount() != mNum) {
+                        noteList.clear();
+                        ContentValues vaNote = new ContentValues();
+                        int posNote = 0;
+                        while (cursorNote.moveToNext()) {
+                            int num = posNote++;
+                            vaNote.put("num", num);
+                            int noteId = cursorNote.getInt(cursorNote.getColumnIndex("id"));
+                            getContentResolver().update(uri, vaNote, "id = ?", new String[]{String.valueOf(noteId)});
+
+                            int tag = cursorNote.getInt(cursorNote.getColumnIndex("tag"));
+                            String textDate = cursorNote.getString(cursorNote.getColumnIndex("textDate"));
+                            String textTime = cursorNote.getString(cursorNote.getColumnIndex("textTime"));
+                            boolean alarm = cursorNote.getString(cursorNote.getColumnIndex("alarm")).length() > 1 ? true : false;
+                            String noteTitle = cursorNote.getString(cursorNote.getColumnIndex("noteTitle"));
+                            String mainText = cursorNote.getString(cursorNote.getColumnIndex("mainText"));
+                            String flagText = cursorNote.getString(cursorNote.getColumnIndex("flag"));
+                            Note temp = new Note(noteId, num, tag, textDate, textTime, alarm, noteTitle, mainText, flagText);
+                            noteList.add(temp);
+                            vaNote.clear();
+                        }
+                    }
+                    cursorNote.close();
+
+                    adapter.notifyDataSetChanged();
                 }
-
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
+
         });
         builder.create().show();
 
@@ -349,90 +349,77 @@ public class NoteActivity extends AppCompatActivity {
         // 添加适配器
         adapter = new NoteAdapter(currentNoteList);
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new NoteAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                int cuId = 1;
-                Intent intent = new Intent(NoteActivity.this, Edit.class);
-                if (!flag.equals("首页")) {
-                    cuId = currentNoteList.get(position).getId();
-                } else {
-                    cuId = noteList.get(position).getId();
-                }
-                Note record = getNoteWithNum(cuId);
-                //把选中的备忘记录添加进intent
-                transportInformationToEdit(intent, record);
-                startActivityForResult(intent, position);
+        adapter.setOnItemClickListener(position -> {
+            int cuId = 1;
+            Intent intent = new Intent(NoteActivity.this, Edit.class);
+            if (!flag.equals("首页")) {
+                cuId = currentNoteList.get(position).getId();
+            } else {
+                cuId = noteList.get(position).getId();
             }
+            Note record = getNoteWithNum(cuId);
+            //把选中的备忘记录添加进intent
+            transportInformationToEdit(intent, record);
+            startActivityForResult(intent, position);
         });
 
-        adapter.setOnItemLongClickListener(new NoteAdapter.ItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(final int position) {
+        adapter.setOnItemLongClickListener(position -> {
 
-                final AlertDialog.Builder dialog = new AlertDialog.Builder(NoteActivity.this);
-                dialog.setTitle("删除");
-                dialog.setMessage("是否删除？");
-                dialog.setCancelable(false);
-                dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.i("###删除position--->:", String.valueOf(position));
-                        int cuId = 1;
-                        int pos = 0;
-                        int n = noteList.size();
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(NoteActivity.this);
+            dialog.setTitle("删除");
+            dialog.setMessage("是否删除？");
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("确认", (dialog1, which) -> {
+                Log.i("###删除position--->:", String.valueOf(position));
+                int cuId = 1;
+                int pos = 0;
+                int n = noteList.size();
 
-                        if (!flag.equals("首页")) {
-                            cuId = currentNoteList.get(position).getId();
-                            pos = currentNoteList.get(position).getNum();
-                            //如果这个备忘录有一个闹钟,取消它
-                            if (currentNoteList.get(position).isbAlarm()) {
-                                cancelAlarm(pos);
-                            }
-                            currentNoteList.remove(position);
+                if (!flag.equals("首页")) {
+                    cuId = currentNoteList.get(position).getId();
+                    pos = currentNoteList.get(position).getNum();
+                    //如果这个备忘录有一个闹钟,取消它
+                    if (currentNoteList.get(position).isbAlarm()) {
+                        cancelAlarm(pos);
+                    }
+                    currentNoteList.remove(position);
 
-                            for (int i = 0; i < noteList.size(); i++) {
-                                if (cuId == noteList.get(i).getId()) {
-                                    noteList.remove(i);
-                                    break;
-                                }
-                            }
-
-                        } else {
-                            //如果这个备忘录有一个闹钟,取消它
-                            if (noteList.get(position).isbAlarm()) {
-                                cancelAlarm(position);
-                            }
-                            cuId = noteList.get(position).getId();
-                            pos = position;
-                            noteList.remove(position);
-                        }
-
-                        //界面刷新
-                        adapter.notifyDataSetChanged();
-                        String whereArgs = String.valueOf(cuId);
-                        Uri uri = Uri.parse("content://dev.lyg.cp.note.provider/note");
-                        getContentResolver().delete(uri, "id = ?", new String[]{whereArgs});
-
-                        for (int i = pos + 1; i < n; i++) {
-                            ContentValues values = new ContentValues();
-                            values.put("num", i - 1);//重新设置记录在列表中的位置
-                            String where = String.valueOf(i);
-                            getContentResolver().update(uri, values, "num = ?", new String[]{where});
-                            values.clear();
+                    for (int i = 0; i < noteList.size(); i++) {
+                        if (cuId == noteList.get(i).getId()) {
+                            noteList.remove(i);
+                            break;
                         }
                     }
-                });
-                dialog.setNegativeButton("取消", new DialogInterface.
-                        OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
 
-                dialog.show();
-                return true;
-            }
+                } else {
+                    //如果这个备忘录有一个闹钟,取消它
+                    if (noteList.get(position).isbAlarm()) {
+                        cancelAlarm(position);
+                    }
+                    cuId = noteList.get(position).getId();
+                    pos = position;
+                    noteList.remove(position);
+                }
+
+                //界面刷新
+                adapter.notifyDataSetChanged();
+                String whereArgs = String.valueOf(cuId);
+                Uri uri = Uri.parse("content://dev.lyg.cp.note.provider/note");
+                getContentResolver().delete(uri, "id = ?", new String[]{whereArgs});
+
+                for (int i = pos + 1; i < n; i++) {
+                    ContentValues values = new ContentValues();
+                    values.put("num", i - 1);//重新设置记录在列表中的位置
+                    String where = String.valueOf(i);
+                    getContentResolver().update(uri, values, "num = ?", new String[]{where});
+                    values.clear();
+                }
+            });
+            dialog.setNegativeButton("取消", (dialog12, which) -> {
+            });
+
+            dialog.show();
+            return true;
         });
 
     }

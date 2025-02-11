@@ -1,4 +1,4 @@
-package dev.lyg.cp.note;
+package dev.lyg.cp.note.alarm;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -28,16 +28,7 @@ public class AlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        return super.onStartCommand(intent, flags, startId);
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d("AlarmService","executed at"+new Date().toString());
-//            }
-//        });
-
-        //安排闹钟广播
         alarmId = intent.getIntExtra("alarmId", 0);
         alarm = intent.getStringExtra("alarm");
         int alarm_hour = 0;

@@ -1,4 +1,4 @@
-package dev.lyg.cp.unit_test;
+package dev.lyg.cp.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
