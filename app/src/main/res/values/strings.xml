@@ -18,7 +18,7 @@
     <string name="dialog_ok">确认</string>
 
     <string name="edit_title">标题</string>
-    <string name="search_hint">搜索便签</string>
+    <string name="search_hint">便笺</string>
     <string-array name="type_name">
         <item>学习</item>
         <item>生活</item>

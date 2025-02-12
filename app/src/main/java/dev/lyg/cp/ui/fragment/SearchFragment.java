@@ -158,80 +158,26 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void showTicketGate() {
-        if (trainnNumberEditText.getText().length() == 0 || dateEditText.getText().length() == 0) {
-            Toast.makeText(requireContext(), "请先填写车次和日期", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        ViewLoading.show(getContext(), "正在获取数据", true);
-
-        // 创建 OkHttpClient 实例
-        OkHttpClient client = new OkHttpClient();
-
-        // 构造请求 URL
-        String url = "https://mobile.12306.cn/weixin/wxcore/getPlatform" +
-                "?trainCode=" + trainnNumberEditText.getText().toString() +
-                "&stationName=" + departureStationEditText.getText().toString() +
-                "&stationCode=NIW&date=" + dateEditText.getText().toString();
-
-        // 创建请求对象
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        // 发送请求并异步获取响应
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("Request", "网络请求失败: " + e.getMessage(), e);
-                getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    try {
-                        // 解析响应 JSON
-                        String responseBody = response.body().string();
-
-                        JSONObject jsonResponse = new JSONObject(responseBody);
-
-                        // 提取检票口信息
-                        JSONObject data = jsonResponse.getJSONObject("data");
-                        String result = data.getString("result");
-                        Log.d("Request", "Network response: " + result);
-
-                        // 使用正则提取检票口信息（15A、15B）
-                        String ticketGateInfo = FormatUtils.extractTicketGateInfo(result);
-
-                        // 在 UI 线程更新 TextView 显示检票口信息
-                        getActivity().runOnUiThread(() -> checkEditText.setText(ticketGateInfo));
-                    } catch (Exception e) {
-                        Log.d("Request2", "解析数据失败" + e);
-                        getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "解析数据失败", Toast.LENGTH_SHORT).show());
-                    }
-                } else {
-                    Log.e("Request", "响应中的错误: " + response.code());
-                    getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败，状态码" + response.code(), Toast.LENGTH_SHORT).show());
+    private void getTrainNo(TextView selectView, int lor) {
+        selectView.setOnClickListener(v -> {
+            // **优化点1：如果已填写出发时间和出发站，直接显示数据**
+            if (leftEditText.length() > 0 && departureStationEditText.length() > 0) {
+                if (lor == 2 && !menuItems2.isEmpty()) {
+                    showScrollableMenu(selectView, lor);
+                    return;
                 }
             }
-        });
-    }
 
-    private void getTrainNo(TextView selectView, int lor) {
-
-        selectView.setOnClickListener(v -> {
             if (trainnNumberEditText.getText().length() == 0 || dateEditText.getText().length() == 0) {
                 Toast.makeText(requireContext(), "请先填写车次和日期", Toast.LENGTH_SHORT).show();
                 return;
             }
+            ViewLoading.show(getContext(), "正在获取数据", true);
 
             Log.d("getTrainNo: ", trainnNumberEditText.getText() + " " + FormatUtils.convertDateToSimpleFormat(dateEditText.getText().toString()));
 
-            String trainCode = trainnNumberEditText.getText().toString(); //"K1247";
-            String date = FormatUtils.convertDateToSimpleFormat(dateEditText.getText().toString());//"20250212";
+            String trainCode = trainnNumberEditText.getText().toString();
+            String date = FormatUtils.convertDateToSimpleFormat(dateEditText.getText().toString());
 
             OkHttpClient client = new OkHttpClient();
 
@@ -243,6 +189,7 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.e("TrainData", "获取 train_no 失败", e);
+                    getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "获取车次失败", Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
@@ -352,6 +299,65 @@ public class SearchFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     Log.e("Request2", "解析 JSON 数据失败", e);
+                }
+            }
+        });
+    }
+
+    private void showTicketGate() {
+        if (trainnNumberEditText.getText().length() == 0 || dateEditText.getText().length() == 0) {
+            Toast.makeText(requireContext(), "请先填写车次和日期", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // 创建 OkHttpClient 实例
+        OkHttpClient client = new OkHttpClient();
+
+        // 构造请求 URL
+        String url = "https://mobile.12306.cn/weixin/wxcore/getPlatform" +
+                "?trainCode=" + trainnNumberEditText.getText().toString() +
+                "&stationName=" + departureStationEditText.getText().toString() +
+                "&stationCode=NIW&date=" + dateEditText.getText().toString();
+
+        // 创建请求对象
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        // 发送请求并异步获取响应
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("Request", "网络请求失败: " + e.getMessage(), e);
+                getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+                    try {
+                        // 解析响应 JSON
+                        String responseBody = response.body().string();
+
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+
+                        // 提取检票口信息
+                        JSONObject data = jsonResponse.getJSONObject("data");
+                        String result = data.getString("result");
+                        Log.d("Request", "Network response: " + result);
+
+                        // 使用正则提取检票口信息（15A、15B）
+                        String ticketGateInfo = FormatUtils.extractTicketGateInfo(result);
+
+                        // 在 UI 线程更新 TextView 显示检票口信息
+                        getActivity().runOnUiThread(() -> checkEditText.setText(ticketGateInfo));
+                    } catch (Exception e) {
+                        Log.d("Request2", "解析数据失败" + e);
+                        getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "解析数据失败", Toast.LENGTH_SHORT).show());
+                    }
+                } else {
+                    Log.e("Request", "响应中的错误: " + response.code());
+                    getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "请求失败，状态码" + response.code(), Toast.LENGTH_SHORT).show());
                 }
             }
         });

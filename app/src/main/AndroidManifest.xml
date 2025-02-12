@@ -3,11 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-    <!--手机震动授权-->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- 手机震动授权 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
@@ -21,11 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.车票">
         <activity
+            android:name=".ui.ImageWatch.ImageWatchActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.NoteActivity"
             android:exported="false" />
         <activity android:name=".ui.activity.Edit" />
         <activity android:name=".ui.activity.Search" />
-
         <activity
             android:name=".ui.activity.LockActivity"
             android:excludeFromRecents="true"
@@ -79,10 +78,12 @@
             android:authorities="dev.lyg.cp.note.provider"
             android:enabled="true"
             android:exported="true" />
+
         <receiver
             android:name=".note.alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+
         <service
             android:name=".note.alarm.AlarmService"
             android:enabled="true"

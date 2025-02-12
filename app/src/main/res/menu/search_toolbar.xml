@@ -4,9 +4,9 @@
 
     <item
         android:id="@+id/menu_search"
-        android:icon="@drawable/search"
+        android:icon="@drawable/sspx"
         android:orderInCategory="200"
-        android:title="搜索"
+        android:title="@string/search_hint"
         android:visible="true"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
