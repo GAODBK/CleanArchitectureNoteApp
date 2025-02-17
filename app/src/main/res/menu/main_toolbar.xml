@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/searchButton"
-        android:icon="@drawable/search"
+        android:icon="@drawable/sspx"
         android:orderInCategory="100"
         android:title="搜索"
         android:visible="true"

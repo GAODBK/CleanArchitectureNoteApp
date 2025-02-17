@@ -23,7 +23,9 @@
         <activity
             android:name=".ui.activity.NoteActivity"
             android:exported="false" />
-        <activity android:name=".ui.activity.Edit" />
+        <activity
+            android:name=".ui.activity.Edit"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activity.Search" />
         <activity
             android:name=".ui.activity.LockActivity"

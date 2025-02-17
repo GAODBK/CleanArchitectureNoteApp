@@ -26,6 +26,9 @@
     </string-array>
     <string name="edit_text">内容</string>
 
+    <string name="to_expand_hint">展开</string>
+    <string name="to_shrink_hint">收起</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
