@@ -11,6 +11,5 @@
         android:layout_height="wrap_content"
         android:text="@string/app_widget_description"
         android:textSize="22sp"
-        android:fontFamily="@font/beautiful"
         android:textColor="#000000" />
 </FrameLayout>

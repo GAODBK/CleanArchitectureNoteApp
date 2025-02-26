@@ -6,16 +6,16 @@
     </declare-styleable>
 
     <declare-styleable name="WheelView">
-        <attr name="wheelCyclic" format="boolean"/>
-        <attr name="wheelEntries" format="reference"/>
-        <attr name="wheelItemCount" format="integer"/>
-        <attr name="wheelItemWidth" format="dimension"/>
-        <attr name="wheelItemHeight" format="dimension"/>
-        <attr name="wheelTextSize" format="dimension"/>
-        <attr name="wheelTextColor" format="color"/>
-        <attr name="wheelSelectedTextColor" format="color"/>
-        <attr name="wheelDividerColor" format="color"/>
-        <attr name="wheelHighlightColor" format="color"/>
+        <attr name="wheelCyclic" format="boolean" />
+        <attr name="wheelEntries" format="reference" />
+        <attr name="wheelItemCount" format="integer" />
+        <attr name="wheelItemWidth" format="dimension" />
+        <attr name="wheelItemHeight" format="dimension" />
+        <attr name="wheelTextSize" format="dimension" />
+        <attr name="wheelTextColor" format="color" />
+        <attr name="wheelSelectedTextColor" format="color" />
+        <attr name="wheelDividerColor" format="color" />
+        <attr name="wheelHighlightColor" format="color" />
     </declare-styleable>
     <declare-styleable name="ExpandableTextView">
         <attr name="etv_MaxLinesOnShrink" format="reference|integer" />
@@ -35,5 +35,24 @@
             <enum name="shrink" value="0" />
             <enum name="expand" value="1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CardStackView">
+        <attr name="stackOverlapGaps" format="dimension" />
+        <attr name="stackOverlapGapsCollapse" format="dimension" />
+        <attr name="stackHeaderHeight" format="dimension" />
+        <attr name="stackDuration" format="integer" />
+        <attr name="stackNumBottomShow" format="integer" />
+        <attr name="stackAnimationType">
+            <flag name="allDown" value="0" />
+            <flag name="upDown" value="1" />
+            <flag name="upDownStack" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FlipLayout">
+        <attr name="flipTextBackground" format="color|reference" />
+        <attr name="flipTextSize" format="dimension" />
+        <attr name="flipTextColor" format="color" />
     </declare-styleable>
 </resources>

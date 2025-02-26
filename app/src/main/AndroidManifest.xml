@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.车票">
         <activity
-            android:name=".ui.ImageWatch.ImageWatchActivity"
+            android:name=".ui.cardstack.CardStackFragment"
             android:exported="false" />
         <activity
             android:name=".ui.activity.NoteActivity"

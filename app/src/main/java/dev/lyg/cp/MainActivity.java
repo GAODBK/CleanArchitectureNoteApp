@@ -17,6 +17,7 @@ import android.widget.Toast;
 import dev.lyg.cp.lock.NotificationUtil;
 import dev.lyg.cp.lock.PlayService;
 import dev.lyg.cp.ui.activity.NoteActivity;
+import dev.lyg.cp.ui.cardstack.CardStackFragment;
 import dev.lyg.cp.ui.fragment.HomeFragment;
 import dev.lyg.cp.ui.fragment.LeaveFragment;
 import dev.lyg.cp.ui.fragment.MeFragment;
@@ -68,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent3);
                 return false; // 阻止选中状态变化
             } else if (itemId == R.id.sticky) {
-                switchFragment(3);
+                //switchFragment(3);
+                Intent intent2 = new Intent(this, CardStackFragment.class);
+                startActivity(intent2);
+                return false;
             } else if (itemId == R.id.me) {
                 switchFragment(4);
             }

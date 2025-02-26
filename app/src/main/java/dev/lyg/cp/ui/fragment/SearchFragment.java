@@ -160,14 +160,6 @@ public class SearchFragment extends Fragment {
 
     private void getTrainNo(TextView selectView, int lor) {
         selectView.setOnClickListener(v -> {
-            // **优化点1：如果已填写出发时间和出发站，直接显示数据**
-            if (leftEditText.length() > 0 && departureStationEditText.length() > 0) {
-                if (lor == 2 && !menuItems2.isEmpty()) {
-                    showScrollableMenu(selectView, lor);
-                    return;
-                }
-            }
-
             if (trainnNumberEditText.getText().length() == 0 || dateEditText.getText().length() == 0) {
                 Toast.makeText(requireContext(), "请先填写车次和日期", Toast.LENGTH_SHORT).show();
                 return;

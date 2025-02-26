@@ -29,6 +29,10 @@
     <string name="to_expand_hint">展开</string>
     <string name="to_shrink_hint">收起</string>
 
+    <string name="menu_action_all_down">全部下来</string>
+    <string name="menu_action_up_down">向上</string>
+    <string name="menu_action_up_down_stack">向下堆叠</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

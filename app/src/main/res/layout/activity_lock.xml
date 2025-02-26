@@ -1,81 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?>
-<dev.lyg.cp.lock.SlidingFinishLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:myFlip="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lock_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#242424"
+    android:orientation="vertical"
     tools:context=".ui.activity.LockActivity">
-    <!--dev/lyg/cp/lock/SlidingFinishLayout.java-->
 
-    <TextView
-        android:id="@+id/lock_time"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="138dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="17:30"
-        android:textColor="#ffffff"
-        android:textSize="118sp"
-        android:fontFamily="@font/beautiful"
-        android:textStyle="bold|italic" />
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:paddingLeft="50dp"
+        android:paddingTop="50dp"
+        android:paddingRight="50dp"
+        android:paddingBottom="50dp">
 
-    <TextView
-        android:id="@+id/lock_date"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_above="@+id/hintTextView"
-        android:gravity="center"
-        android:text="12月21日 星期三"
-        android:fontFamily="@font/beautiful"
-        android:textColor="#ffffff"
-        android:textSize="30sp" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:cardCornerRadius="20dp">
 
-    <ImageView
-        android:id="@+id/iv_audio"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        app:srcCompat="@color/colorPrimary" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_audio_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_audio"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="专辑名称"
-        android:fontFamily="@font/beautiful"
-        android:textColor="#ffffff"
-        android:textSize="30sp" />
+                <dev.lyg.cp.lock.FlipLayout
+                    android:id="@+id/bit_flip_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    myFlip:flipTextBackground="@color/DimGray"
+                    myFlip:flipTextColor="@color/white"
+                    myFlip:flipTextSize="230sp" />
 
-    <TextView
-        android:id="@+id/tv_audio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_audio_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="6dp"
-        android:text="演唱者"
-        android:fontFamily="@font/beautiful"
-        android:textColor="#ffffff"
-        android:textSize="26sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_gravity="center"
+                    android:background="@color/black" />
+            </FrameLayout>
+        </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="20dp">
 
-    <dev.lyg.cp.lock.HintTextView
-        android:id="@+id/hintTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:includeFontPadding="false"
-        android:text=">>> 滑动解锁"
-        android:fontFamily="@font/beautiful"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-</dev.lyg.cp.lock.SlidingFinishLayout>
+                <dev.lyg.cp.lock.FlipLayout
+                    android:id="@+id/bit_flip_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    myFlip:flipTextBackground="@color/DimGray"
+                    myFlip:flipTextColor="@color/white"
+                    myFlip:flipTextSize="230sp" />
+
+                <View
+                    android:id="@+id/last_price_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_gravity="center"
+                    android:background="@color/black" />
+            </FrameLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</LinearLayout>
